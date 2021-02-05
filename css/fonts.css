@@ -1,0 +1,47 @@
+@font-face {
+    font-family: Avenir-Classic;
+    src: url(../fonts/avenir/AvenirNextCyr-Thin.eot);
+    src: url(../fonts/avenir/AvenirNextCyr-Thin.eot?#iefix) format('embedded-opentype'),
+    url(../fonts/avenir/AvenirNextCyr-Thin.woff) format('woff'),
+    url(../fonts/avenir/AvenirNextCyr-Thin.ttf) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: Avenir-Bold;
+    src: url(../fonts/avenir/AvenirNextCyr-Bold.eot);
+    src: url(../fonts/avenir/AvenirNextCyr-Bold.eot?#iefix) format('embedded-opentype'),
+    url(../fonts/avenir/AvenirNextCyr-Bold.woff) format('woff'),
+    url(../fonts/avenir/AvenirNextCyr-Bold.ttf) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: Avenir-Demi;
+    src: url(../fonts/avenir/AvenirNextCyr-Demi.eot);
+    src: url(../fonts/avenir/AvenirNextCyr-Demi.eot?#iefix) format('embedded-opentype'),
+    url(../fonts/avenir/AvenirNextCyr-Demi.woff) format('woff'),
+    url(../fonts/avenir/AvenirNextCyr-Demi.ttf) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+* {
+    font-family: Avenir-Demi;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    outline: none;
+    overflow: hidden;
+}
