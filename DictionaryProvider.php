@@ -1,11 +1,12 @@
 <?php
-require_once('UserProvider.php');
+include_once('Service.php');
+include_once('UserProvider.php');
 
 class DictionaryProvider
 {
     public static function createWordlist($wordlistName, $wordlistDiscription, $userid, $isPublic)
     {
-        $mysqli = UserProvider::connectToDB();
+        $mysqli = Service::connectToDB();
         $result = mysqli_query($mysqli, "INSERT INTO dictionaries(dictionaryid, name, discription, wordlistowner, ispublic) VALUES(NULL, '$wordlistName', '$wordlistDiscription', '$userid', '$isPublic')");
         $lastId = $mysqli->insert_id;
         mysqli_query($mysqli, "INSERT INTO users_has_dictionaries(users_userid, dictionaries_dictionaryid) VALUES('$userid', '$lastId')");
@@ -15,7 +16,7 @@ class DictionaryProvider
 
     public static function isWordlistNameUsed($wordlistName): bool
     {
-        $mysqli = UserProvider::connectToDB();
+        $mysqli = Service::connectToDB();
         $query = "SELECT name FROM dictionaries WHERE name = '$wordlistName'";
         $result = $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
         $mysqli->close();
@@ -26,19 +27,14 @@ class DictionaryProvider
 
     public static function checkWordlistName($wordlistName): bool
     {
-        if (preg_match("/[^(\s\w\-)]/u", $wordlistName) == 1 or mb_strlen($wordlistName) < 4 or mb_strlen($wordlistName) > 50) {
+        if (preg_match("/[^(\s\w\-)]/u", $wordlistName) != 1 and Service::checkLength(4, 50, $wordlistName)) {
             return true;
         } else return false;
     }
 
-    public static function strCleaner($string): string
-    {
-        return htmlspecialchars(strip_tags(trim($string, " \n\r\t\v\0")));
-    }
-
     public static function getUsersLists($userid): string
     {
-        $mysqli = UserProvider::connectToDB();
+        $mysqli = Service::connectToDB();
         $query = "SELECT
                       dictionaries.dictionaryid,
                       dictionaries.name,
@@ -61,7 +57,7 @@ class DictionaryProvider
 
     public static function isUserHasADictionary($userid, $dictionaryid): bool
     {
-        $mysqli = UserProvider::connectToDB();
+        $mysqli = Service::connectToDB();
         $query = "SELECT *
                     FROM users_has_dictionaries
                     WHERE users_userid = '$userid' AND dictionaries_dictionaryid = '$dictionaryid'";
@@ -72,19 +68,4 @@ class DictionaryProvider
         } else return true;
     }
 
-    public static function isStringEnglish($string)
-    {
-        return preg_match("/[^(A-Za-z\')]/u", $string);
-    }
-
-    public static function isStringRussian($string)
-    {
-        return preg_match("/[^(А-Яа-яЁё)]/u", $string);
-    }
-
-    public static function addWordIntoDictionary($englishWord, $translation, $dictionaryid)
-    {
-        $mysqli = UserProvider::connectToDB();
-        return mysqli_query($mysqli, "INSERT INTO wordlist(dictionaryid, word, translation) VALUES('$dictionaryid', '$englishWord', '$translation')");
-    }
 }

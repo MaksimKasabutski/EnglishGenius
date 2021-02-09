@@ -7,6 +7,7 @@ if (session_status() != PHP_SESSION_ACTIVE) session_start();
     <meta charset="utf-8">
     <title>EnglishGenius</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="library/hystModal-master/dist/hystmodal.min.css">
 </head>
 <body>
 <div id="response" style="display: none;"></div>
@@ -61,5 +62,6 @@ if (isset($_SESSION['username']) AND Security::checkCookie()) {
 }
 ?>
 <script src='script.js'></script>
+<script src="library/hystModal-master/dist/hystmodal.min.js"></script>
 </body>
 </html>

@@ -19,7 +19,7 @@ class Security
 
     public static function checkPassword($username, $password): bool
     {
-        $mysqli = UserProvider::connectToDB();
+        $mysqli = Service::connectToDB();
         $query = "SELECT password FROM users WHERE username = '$username'";
         $result = $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
         $mysqli->close();
@@ -30,7 +30,7 @@ class Security
     public static function checkCookie(): bool
     {
         if (isset($_COOKIE['hash']) and isset($_SESSION['username'])) {
-            $mysqli = UserProvider::connectToDB();
+            $mysqli = Service::connectToDB();
             $username = $_SESSION['username'];
             $query = "SELECT cookie FROM users WHERE username = '$username'";
             $userCookie = $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);

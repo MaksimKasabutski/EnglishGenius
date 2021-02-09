@@ -9,8 +9,8 @@ require_once('../DictionaryProvider.php');
 $request = json_decode(file_get_contents('php://input'), true);
 
 
-$wordlistName = DictionaryProvider::strCleaner($request['wordlistName']);
-$wordlistDiscription = DictionaryProvider::strCleaner($request['wordlistDiscription']);
+$wordlistName = Service::strCleaner($request['wordlistName']);
+$wordlistDiscription = Service::strCleaner($request['wordlistDiscription']);
 if(!$request['isPublic']) {
     $isPublic = 0;
 } else $isPublic = 1;
@@ -20,7 +20,7 @@ if(DictionaryProvider::isWordlistNameUsed($wordlistName)) {
     $response = new Response('error', 'This name is already taken.');
     echo json_encode($response);
     return;
-} elseif(DictionaryProvider::checkWordlistName($wordlistName)) {
+} elseif(!DictionaryProvider::checkWordlistName($wordlistName)) {
     $response = new Response('error', 'Wrong name.');
     echo json_encode($response);
     return;

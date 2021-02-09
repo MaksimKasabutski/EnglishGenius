@@ -1,16 +1,12 @@
 <?php
+include_once('Service.php');
 
 class UserProvider
 {
-    public static function connectToDB(): object
-    {
-        $mysqli = new mysqli('localhost', 'root', '1234', 'EnglishGenius');
-        return $mysqli;
-    }
 
     public static function getUser($username): bool
     {
-        $mysqli = self::connectToDB();
+        $mysqli = Service::connectToDB();
         $query = "SELECT username FROM users WHERE username = '$username'";
         $result = $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
         $mysqli->close();
@@ -21,7 +17,7 @@ class UserProvider
 
     public static function getUserId($username)
     {
-        $mysqli = self::connectToDB();
+        $mysqli = Service::connectToDB();
         $query = "SELECT userid FROM users WHERE username = '$username'";
         $result = $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
         $mysqli->close();
@@ -30,7 +26,7 @@ class UserProvider
 
     public static function isEmailUsed($email): bool
     {
-        $mysqli = self::connectToDB();
+        $mysqli = Service::connectToDB();
         $query = "SELECT email FROM users WHERE email = '$email'";
         $result = $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
         $mysqli->close();
@@ -49,7 +45,7 @@ class UserProvider
 
     public static function addUser($username, $email, $password, $cookie): bool
     {
-        $mysqli = self::connectToDB();
+        $mysqli = Service::connectToDB();
         $result = mysqli_query($mysqli, "INSERT INTO users VALUES(NULL, '$username', '$email', '$password', '$cookie')");
         $mysqli->close();
         return $result;
@@ -58,7 +54,7 @@ class UserProvider
     public static function addCookieToUser($username, $cookie)
     {
         $query = "UPDATE users SET cookie = '$cookie' WHERE username = '$username'";
-        $mysqli = self::connectToDB();
+        $mysqli = Service::connectToDB();
         $mysqli->query($query);
         $mysqli->close();
     }

@@ -14,7 +14,7 @@
 
 #modal_addWord_window {
     width: 500px;
-    height: 160px;
+    height: 200px;
     text-align: center;
     padding: 15px;
     padding-top: 25px;
@@ -56,7 +56,8 @@
     border-radius: 3px 3px 3px 3px;
 }
 
-.button {
+.button, #addWordButton {
+    display: inline-block;
     background: #2fc5ff;
     border-radius: 3px;
     color: #fff;
@@ -64,12 +65,9 @@
     padding: 12px 20px;
 }
 
-.button:hover { background: #198d98; }
+.button:hover, #addWordButton:hover { background: #198d98; }
 
 #modal_addWord_window input[type='submit'] {
     width: 120px;
 }
 
-#addWordButton {
-    display: inline-block;
-}
