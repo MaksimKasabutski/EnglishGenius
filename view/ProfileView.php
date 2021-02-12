@@ -10,10 +10,14 @@ class ProfileView
                  <div><a href='/createwordlist.php' class='button'>Create dictionaries</a></div>
                  <br>
                  <br>
-                 <p>Your dictionaries</p>";
+                 <p>Your dictionaries</p>
+                 <ul class='list-group'>";
         for ($i = 0; $i < count($data); $i++) {
             $link = "http://englishgenius.loc/wordlist/" . $data[$i]['dictionaryid'];
-            $page .= "<a href='" . $link . "'>" . $data[$i]['name'] . "</a><br>";
+            $page .= "
+                    <li class='list-group-item'>
+                        <a class='stretched-link' href='" . $link . "'>" . $data[$i]['name'] . "</a>
+                    </li>";
         }
         $page .= '</div>';
         echo $page;

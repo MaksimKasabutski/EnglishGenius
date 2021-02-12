@@ -1,9 +1,10 @@
 <?php
+session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 'on');
 
 define('ROOT', dirname(__FILE__));
-require_once(ROOT . '/components/Response.php');
+require_once ROOT . '/components/Response.php';
 include_once ROOT . '/models/Users.php';
 
 $request = json_decode(file_get_contents('php://input'), true);
