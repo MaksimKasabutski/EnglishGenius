@@ -1,8 +1,8 @@
 <?php
 session_start();
-include_once('DictionaryProvider.php');
+include_once('Dictionaries.php');
 include_once('view/tableView.php');
-include_once('WordProvider.php');
+include_once('Words.php');
 error_reporting(E_ALL);
 ini_set('display_errors', 'on');
 ?>
@@ -24,7 +24,7 @@ ini_set('display_errors', 'on');
 <body style="margin-top: 40px">
 <div class="container">
     <?php
-    DictionaryProvider::isUserHasADictionary($_SESSION['userid'], $_GET['id']);
+    Dictionaries::isUserHasADictionary($_SESSION['userid'], $_GET['id']);
     renderWords();
     ?>
 

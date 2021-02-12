@@ -21,7 +21,7 @@ createWordlist.onsubmit = function (event) {
             servResponse.style.display = 'block';
             servResponse.textContent = json.message;
             if(json.result == 'success') {
-                setTimeout('location.replace("/mainpage.php")',2000);
+                setTimeout('location.replace("/profile")',2000);
             }
         }
     }

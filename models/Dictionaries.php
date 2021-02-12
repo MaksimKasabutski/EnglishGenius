@@ -1,8 +1,8 @@
 <?php
-include_once('Service.php');
-include_once('UserProvider.php');
+require_once(ROOT . '/components/Service.php');
+require_once(ROOT . '/models/Users.php');
 
-class DictionaryProvider
+class Dictionaries
 {
     public static function createWordlist($wordlistName, $wordlistDiscription, $userid, $isPublic)
     {
@@ -30,29 +30,6 @@ class DictionaryProvider
         if (preg_match("/[^(\s\w\-)]/u", $wordlistName) != 1 and Service::checkLength(4, 50, $wordlistName)) {
             return true;
         } else return false;
-    }
-
-    public static function getUsersLists($userid): string
-    {
-        $mysqli = Service::connectToDB();
-        $query = "SELECT
-                      dictionaries.dictionaryid,
-                      dictionaries.name,
-                      dictionaries.discription
-                    FROM users_has_dictionaries
-                      INNER JOIN dictionaries
-                        ON users_has_dictionaries.dictionaries_dictionaryid = dictionaries.dictionaryid
-                      INNER JOIN users
-                        ON users_has_dictionaries.users_userid = users.userid
-                        WHERE users.userid = '$userid'
-                    ";
-        $result = $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
-        $mysqli->close();
-        for ($i = 0; $i < count($result); $i++) {
-            $link = "http://englishgenius.loc/table.php?id=" . $result[$i]['dictionaryid'];
-            $list .= "<a href='" . $link . "'>" . $result[$i]['name'] . "</a><br>";
-        }
-        return $list;
     }
 
     public static function isUserHasADictionary($userid, $dictionaryid): bool

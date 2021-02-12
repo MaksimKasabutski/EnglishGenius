@@ -1,10 +1,10 @@
 <?php
-include_once('../WordProvider.php');
+include_once('../Words.php');
 
 function renderWords()
 {
     $dictionaryId = $_GET['id'];
-    $words = WordProvider::getDictionaryWords($dictionaryId);
+    $words = Words::getDictionaryWords($dictionaryId);
     $result = "<div class='col-sm-4'><table class='table table-inverse'><tr><th>English word</th><th>Translation</th></tr>";
     foreach ($words as $wordpare) {
         $wordId = $wordpare['wordid'];

@@ -1,6 +1,6 @@
 <?php
 require_once('../Response.php');
-require_once('../WordProvider.php');
+require_once('../Words.php');
 
 $request = json_decode(file_get_contents('php://input'), true);
 
@@ -19,7 +19,7 @@ if (Service::isStringEnglish($englishWord) or Service::isStringRussian($translat
     return;
 }
 
-if (WordProvider::addWordIntoDictionary($englishWord, $translation, $dictionaryid)) {
+if (Words::addWordIntoDictionary($englishWord, $translation, $dictionaryid)) {
     $response = new Response('success', 'Word successfully added');
 } else {
     $response = new Response('error', 'Something whent wrong');

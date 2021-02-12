@@ -1,5 +1,4 @@
 <?php
-require_once('UserProvider.php');
 
 class Security
 {

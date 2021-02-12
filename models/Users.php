@@ -1,8 +1,15 @@
 <?php
-include_once('Service.php');
-
-class UserProvider
+require_once(ROOT . '/components/Service.php');
+require_once(ROOT . '/components/Security.php');
+class Users
 {
+
+    public static function isAlreadyLogin()
+    {
+        if(isset($_SESSION['username'])) {
+            return true;
+        }
+    }
 
     public static function getUser($username): bool
     {
@@ -58,4 +65,5 @@ class UserProvider
         $mysqli->query($query);
         $mysqli->close();
     }
+
 }

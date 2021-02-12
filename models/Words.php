@@ -1,7 +1,7 @@
 <?php
-include_once ('Service.php');
+require_once(ROOT . '/components/Service.php');
 
-class WordProvider
+class Words
 {
     public static function addWordIntoDictionary($englishWord, $translation, $dictionaryid)
     {
