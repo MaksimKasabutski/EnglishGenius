@@ -5,13 +5,7 @@ class Service
 {
     public static function connectToDB(): object
     {
-        $mysqli = new mysqli('localhost', 'root', '1234', 'EnglishGenius');
-        return $mysqli;
-    }
-
-    public static function isStringRussian($string)
-    {
-        return preg_match("/[^(А-Яа-яЁё)]/u", $string);
+        return new mysqli('localhost', 'root', '1234', 'EnglishGenius');
     }
 
     public static function checkLength($minlength, $maxlength, $string): bool
@@ -26,7 +20,12 @@ class Service
         return htmlspecialchars(strip_tags(trim($string, " \n\r\t\v\0")));
     }
 
-    public static function isStringEnglish($string)
+    public static function isRus($string)
+    {
+        return preg_match("/[^(А-Яа-яЁё)]/u", $string);
+    }
+
+    public static function isEng($string)
     {
         return preg_match("/[^(A-Za-z\')]/u", $string);
     }

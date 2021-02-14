@@ -2,13 +2,18 @@
 include_once ROOT . '/models/Profile.php';
 include_once ROOT . '/models/Users.php';
 include_once ROOT . '/View/AuthregView.php';
+include_once ROOT . '/components/Response.php';
 
 class AuthregController
 {
+    public $model;
+    public $view;
+
     public function actionLogin()
     {
+        $this->view = new AuthregView();
         if (!Users::isAlreadyLogin()) {
-            AuthregView::loginView();
+            $this->view->loginView();
         } else {
             header('Location: profile');
         }

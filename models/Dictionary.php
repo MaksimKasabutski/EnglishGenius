@@ -2,8 +2,17 @@
 require_once(ROOT . '/components/Service.php');
 require_once(ROOT . '/models/Users.php');
 
-class Dictionaries
+class Dictionary
 {
+
+    public static function getWordlistName($id)
+    {
+        $mysqli = Service::connectToDB();
+        $result = $mysqli->query("SELECT name FROM dictionaries WHERE dictionaryid = '$id'")->fetch_all(MYSQLI_ASSOC);
+        $mysqli->close();
+        return $result[0]['name'];
+    }
+
     public static function createWordlist($wordlistName, $wordlistDiscription, $userid, $isPublic)
     {
         $mysqli = Service::connectToDB();
@@ -43,6 +52,11 @@ class Dictionaries
         if (empty($result)) {
             return false;
         } else return true;
+    }
+
+    public function setTitle($id)
+    {
+        return self::getWordlistName($id);
     }
 
 }

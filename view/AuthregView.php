@@ -3,9 +3,10 @@
 
 class AuthregView
 {
-    public static function loginView()
+    public function loginView()
     {
-        echo "
+        $page = include 'header.php';
+        $page .=  "
         <div id='response' style='display: none;'></div>
         <div class='login-window' id='loginWindow'>
             <div class='head'>
@@ -25,11 +26,14 @@ class AuthregView
             </fieldset>
         </div>
         <script src='js/login.js'></script>";
+        $page .= include 'footer.php';
+        echo $page;
     }
 
-    public static function registrationView()
+    public function registrationView()
     {
-        echo '
+        include 'header.php';
+        $page =  '
         <div id="response" style="display: none;"></div>
         <div class="login-window" id="registrationWindow">
             <div class="head">
@@ -56,5 +60,8 @@ class AuthregView
         </div>
         <script src="js/registration.js"></script>
         ';
+
+        echo $page;
+        include 'footer.php';
     }
 }

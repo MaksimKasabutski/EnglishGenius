@@ -26,18 +26,4 @@ class Security
         return password_verify($password, $hash);
     }
 
-    public static function checkCookie(): bool
-    {
-        if (isset($_COOKIE['hash']) and isset($_SESSION['username'])) {
-            $mysqli = Service::connectToDB();
-            $username = $_SESSION['username'];
-            $query = "SELECT cookie FROM users WHERE username = '$username'";
-            $userCookie = $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
-            $mysqli->close();
-            if ($userCookie[0]['cookie'] == $_COOKIE['hash']) {
-                return true;
-            }
-        }
-        return false;
-    }
 }

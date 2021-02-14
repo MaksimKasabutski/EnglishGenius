@@ -1,25 +1,16 @@
 <?php
 require_once(ROOT . '/components/Service.php');
 require_once(ROOT . '/components/Security.php');
+
 class Users
 {
 
-    public static function isAlreadyLogin()
+    public static function isAlreadyLogin(): bool
     {
-        if(isset($_SESSION['username'])) {
+        if (isset($_SESSION['username'])) {
             return true;
         }
-    }
-
-    public static function getUser($username): bool
-    {
-        $mysqli = Service::connectToDB();
-        $query = "SELECT username FROM users WHERE username = '$username'";
-        $result = $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
-        $mysqli->close();
-        if (empty($result)) {
-            return false;
-        } else return true;
+        return false;
     }
 
     public static function getUserId($username)
@@ -29,6 +20,17 @@ class Users
         $result = $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
         $mysqli->close();
         return $result[0]['userid'];
+    }
+
+    public static function isUsernameUsed($username): bool
+    {
+        $mysqli = Service::connectToDB();
+        $query = "SELECT username FROM users WHERE username = '$username'";
+        $result = $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
+        $mysqli->close();
+        if (empty($result)) {
+            return false;
+        } else return true;
     }
 
     public static function isEmailUsed($email): bool
@@ -45,25 +47,20 @@ class Users
     public static function checkUserName($username): bool
     {
         $username = htmlspecialchars(trim($username, " \n\r\t\v\0"));
-        if (empty($username) or preg_match("/[^(А-Яа-яёЁ\s\w\-)]/u", $username) == 1 or mb_strlen($username) < 4 or mb_strlen($username) > 16) {
+        if (Service::checkLength(4, 16, $username)) {
             return false;
-        } else return true;
+        }
+        if (preg_match("/[^(\s\w\-)]/u", $username) == 1) {
+            return false;
+        }
+        return true;
     }
 
-    public static function addUser($username, $email, $password, $cookie): bool
+    public static function addUser($username, $email, $password): bool
     {
         $mysqli = Service::connectToDB();
-        $result = mysqli_query($mysqli, "INSERT INTO users VALUES(NULL, '$username', '$email', '$password', '$cookie')");
+        $result = mysqli_query($mysqli, "INSERT INTO users VALUES(NULL, '$username', '$email', '$password')");
         $mysqli->close();
         return $result;
     }
-
-    public static function addCookieToUser($username, $cookie)
-    {
-        $query = "UPDATE users SET cookie = '$cookie' WHERE username = '$username'";
-        $mysqli = Service::connectToDB();
-        $mysqli->query($query);
-        $mysqli->close();
-    }
-
 }

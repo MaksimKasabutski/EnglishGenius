@@ -20,15 +20,19 @@ class Router
 
     public function run()
     {
-        $uri = $this->getURI();
+        $uri = trim($this->getURI(), '/') . '/';
 
         foreach ($this->routes as $uriPattern => $path) {
             if (preg_match("~$uriPattern~", $uri)) {
 
-                $segments = explode('/', $path);
+                $internalRoute = preg_replace("~$uriPattern~", $path, $uri);
+
+                $segments = explode('/', $internalRoute);
 
                 $controllerName = ucfirst(array_shift($segments) . 'Controller');
                 $actionName = 'action' . ucfirst(array_shift($segments));
+
+                $parameters = $segments;
 
                 $controllerFile = ROOT . '/controllers/' . $controllerName . '.php';
 
@@ -37,8 +41,9 @@ class Router
                 }
 
                 $controllerObject = new $controllerName;
-                $result = $controllerObject->$actionName();
-                if ($result != null) {
+                $controllerObject->$actionName($parameters);
+
+                if($controllerObject != null) {
                     break;
                 }
             }

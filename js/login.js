@@ -11,7 +11,7 @@ loginForm.onsubmit = function(event) {
     var xhr = new XMLHttpRequest();
     var body = JSON.stringify({"username" : username , "password" : password});
 
-    xhr.open("POST", '/login.php', true);
+    xhr.open("POST", '/api/login', true);
     xhr.setRequestHeader('Content-Type', 'application/json')
     xhr.send(body);
 

@@ -9,7 +9,7 @@ $englishWord = Service::strCleaner(mb_strtolower($request['englishWord']));
 $translation = Service::strCleaner(mb_strtolower($request['translation']));
 $dictionaryid = $request['dictionaryid'];
 
-if (Service::isStringEnglish($englishWord) or Service::isStringRussian($translation)) {
+if (Service::isEng($englishWord) or Service::isRus($translation)) {
     $response = new Response('error', 'Wrong word');
     echo json_encode($response);
     return;
