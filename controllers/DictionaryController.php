@@ -1,25 +1,30 @@
 <?php
-include_once ROOT . '/models/Users.php';
-include_once ROOT . '/models/Dictionary.php';
-include_once ROOT . '/view/DictionaryView.php';
+require_once ROOT . '/core/Controller.php';
+require_once ROOT . '/models/Users.php';
+require_once ROOT . '/models/Dictionary.php';
 
-class DictionaryController
+class DictionaryController extends Controller
 {
-    public $model;
-    public $view;
 
-    public function actionView($parameters)
+    public function actionData($parameters)
     {
-        $dictionaryid = $parameters[0];
         if (Users::isAlreadyLogin()) {
+            $dictionaryid = $parameters[0];
             $this->model = new Dictionary();
             $title = $this->model->setTitle($dictionaryid);
-            $this->view = new DictionaryView();
-            $this->view->view('main_view.php', 'template_view.php', $title);
+            $data = $this->model->getWords($dictionaryid);
+            $this->view->generate('dictionaryView.php', 'templateView.php', $data, $title);
         } else {
             header('Location: login');
         }
     }
 
-
+    public function actionDeleteWord($parameters)
+    {
+        print_r($parameters);
+        $this->model = new Dictionary();
+        if($this->model->deleteWord($parameters)) {
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+        } else echo 'error';
+    }
 }

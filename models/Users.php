@@ -47,10 +47,10 @@ class Users
     public static function checkUserName($username): bool
     {
         $username = htmlspecialchars(trim($username, " \n\r\t\v\0"));
-        if (Service::checkLength(4, 16, $username)) {
+        if (!Service::checkLength(4, 16, $username)) {
             return false;
         }
-        if (preg_match("/[^(\s\w\-)]/u", $username) == 1) {
+        if (preg_match("/[^(\w\-)]/u", $username) == 1) {
             return false;
         }
         return true;

@@ -1,7 +1,7 @@
 <?php
 
 
-class Profile
+class Profile extends Model
 {
 
     public static function getUsersLists($username): array

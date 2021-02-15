@@ -1,18 +1,15 @@
 <?php
-include_once ROOT . '/models/Profile.php';
-include_once ROOT . '/models/Dictionary.php';
-include_once ROOT . '/models/Users.php';
-include_once ROOT . '/View/ProfileView.php';
+require_once ROOT . '/models/Profile.php';
+require_once ROOT . '/models/Dictionary.php';
+require_once ROOT . '/models/Users.php';
 
-
-class ProfileController
+class ProfileController extends Controller
 {
-    public function actionData()
+    public function actionIndex()
     {
         if (Users::isAlreadyLogin()) {
             $title = $_SESSION['username'];
-            $data = Profile::getUsersLists($_SESSION['username']);
-            ProfileView::view($data, $title);
+            $this->view->generate('profileView.php', 'templateView.php', Profile::getUsersLists($_SESSION['username']), $title);
         } else {
             header('Location: login');
         }

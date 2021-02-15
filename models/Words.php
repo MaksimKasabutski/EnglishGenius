@@ -9,7 +9,7 @@ class Words
         return mysqli_query($mysqli, "INSERT INTO wordlist(dictionaryid, word, translation) VALUES('$dictionaryid', '$englishWord', '$translation')");
     }
 
-    public static function getDictionaryWords($wordlistId): array
+    public static function getWordsFromDictionary($wordlistId): array
     {
         $mysqli = Service::connectToDB();
         $query = "SELECT wordid, word, translation FROM wordlist WHERE dictionaryid = '$wordlistId'";
@@ -24,4 +24,5 @@ class Words
         $mysqli->query("DELETE FROM wordlist WHERE wordid='$dictionaryid'");
         $mysqli->close();
     }
+
 }

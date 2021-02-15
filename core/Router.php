@@ -7,8 +7,8 @@ class Router
 
     public function __construct()
     {
-        $routesPath = ROOT . '/config/routes.php';
-        $this->routes = include($routesPath);
+        $routesPath = ROOT . '/core/routes.php';
+        $this->routes = require($routesPath);
     }
 
     private function getURI()
