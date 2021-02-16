@@ -4,6 +4,7 @@ session_start();
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
+define('URL', 'http://englishgenius.loc/');
 define('ROOT', dirname(__FILE__));
 require_once(ROOT . '/core/bootstrap.php');
 

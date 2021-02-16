@@ -11,7 +11,7 @@ createWordlist.onsubmit = function (event) {
     let xhr = new XMLHttpRequest();
     let body = JSON.stringify({"wordlistName": wordlistName, "wordlistDiscription": wordlistDiscription, "isPublic": isPublic });
 
-    xhr.open("POST", '/formshandlers/createwordlist.php', true);
+    xhr.open("POST", '/api/dictionary/create', true);
     xhr.setRequestHeader('Content-Type', 'application/json')
     xhr.send(body);
 

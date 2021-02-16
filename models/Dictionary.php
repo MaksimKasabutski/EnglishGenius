@@ -94,12 +94,25 @@ class Dictionary
 
         $dictionaryid = $parameters[0];
         $wordid = $parameters[1];
-        if(self::isDictionaryOwner($dictionaryid)) {
+        if (self::isDictionaryOwner($dictionaryid)) {
             $result = false;
             $mysqli = Service::connectToDB();
             $result = mysqli_query($mysqli, "DELETE FROM wordlist WHERE wordid = '$wordid'");
             $mysqli->close();
             return $result;
+        }
+        return false;
+    }
+
+    public function removeDictionary($parameters): bool
+    {
+        $userid = Users::getUserId($_SESSION['username']);
+        $dictionaryid = $parameters[0];
+        if (self::isUserHasADictionary($userid, $dictionaryid)) {
+            $mysqli = Service::connectToDB();
+            $query = "DELETE FROM users_has_dictionaries WHERE users_userid = '$userid' AND dictionaries_dictionaryid = '$dictionaryid'";
+            $mysqli->query($query);
+            return true;
         }
         return false;
     }

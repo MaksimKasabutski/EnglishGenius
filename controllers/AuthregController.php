@@ -11,7 +11,7 @@ class AuthregController extends Controller
     public function actionLogin()
     {
         if (!Users::isAlreadyLogin()) {
-            $this->view->generate('loginView.php', 'templateView.php');
+            $this->view->generate('loginView.php', 'authregTemplateView.php');
         } else {
             header('Location: profile');
         }
@@ -31,7 +31,7 @@ class AuthregController extends Controller
     public function actionRegistration()
     {
         if (!Users::isAlreadyLogin()) {
-            $this->view->generate('registrationView.php', 'templateView.php');
+            $this->view->generate('registrationView.php', 'authregTemplateView.php');
         } else {
             header('Location: profile');
         }

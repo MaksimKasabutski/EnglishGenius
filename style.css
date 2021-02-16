@@ -9,15 +9,14 @@
     font-size: 20px;
 }
 
-#initial-message {
+.initial-message {
     background: #fff;
-    padding: 15px;
-    margin: 20px;
+    padding: 10px;
     border-radius: 5px;
     display: inline-block;
 }
 
-#initial-message a {
+.initial-message a {
     background: #444;
     color: #fff;
     padding: 7px;
