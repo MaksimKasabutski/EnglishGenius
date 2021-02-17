@@ -1,7 +1,7 @@
 <br>
 <div>
     <a href='/dictionary/create' class='btn btn-outline-primary'>Create dictionary</a>
-    <a style="margin-left: 10px;" href='#' class='btn btn-outline-primary'>Add dictionary</a>
+    <a style="margin-left: 10px;" href='/dictionary/add' class='btn btn-outline-primary'>Add dictionary</a>
 </div>
 <br>
 <p>Your dictionaries</p>
@@ -13,6 +13,8 @@
         $name = $data[$i]['name'];
         $discription = $data[$i]['discription'];
         $link = URL . "dictionary/" . $id;
+        $removeLink = URL . 'dictionary/remove/' . $id;
+        $updateLink = URL . 'dictionary/update/' . $id;
         ?>
         <!--           Wordlist generation       -->
         <div class="accordion-item">
@@ -26,28 +28,20 @@
                 <div class="accordion-body">
                     <p><?php echo $discription ?></p>
                     <p>
-                        <a class="btn btn-primary" href='<?php echo $link ?> '>Go</a>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal<?php echo $id ?>" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete wordlist"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></button>
+                        <a class="btn btn-primary" href="<?php echo $link ?> ">Go</a>
+                        <a class="btn btn-warning" href="<?php echo $updateLink ?>">
+                            <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>
+                        </a>
+                        <button onclick="generateMod(<?php echo $id . ', \'' . $name . '\', \'' . $removeLink . '\'' ?>)"
+                                type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="bottom" title="Delete wordlist">
+                            <i class="fa fa-trash-o fa-lg" aria-hidden="true"></i>
+                        </button>
                     </p>
-                </div>
-            </div>
-        </div>
-<!--        Modal windows generation       -->
-        <div class="modal fade" id="modal<?php echo $id ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        Are you shure you want to remove <?php echo $name ?> from your list?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <a type="button" class="btn btn-danger" href="<?php echo URL . 'dictionary/remove/' . $id ?>">Remove</a>
-                    </div>
                 </div>
             </div>
         </div>
     <?php } ?>
 </div>
+<script src="/js/script.js"></script>

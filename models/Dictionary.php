@@ -6,7 +6,7 @@ require_once ROOT . '/models/Words.php';
 class Dictionary
 {
 
-    public static function getWordlistName($id)
+    public static function getDictionaryName($id)
     {
         $mysqli = Service::connectToDB();
         $result = $mysqli->query("SELECT name FROM dictionaries WHERE dictionaryid = '$id'")->fetch_all(MYSQLI_ASSOC);
@@ -14,7 +14,15 @@ class Dictionary
         return $result[0]['name'];
     }
 
-    public static function createWordlist($wordlistName, $wordlistDiscription, $userid, $isPublic)
+    public static function getDictionaryId($name)
+    {
+        $mysqli = Service::connectToDB();
+        $result = $mysqli->query("SELECT dictionaryid FROM dictionaries WHERE name = '$name'")->fetch_all(MYSQLI_ASSOC);
+        $mysqli->close();
+        return $result[0]['dictionaryid'];
+    }
+
+    public static function createDictionary($wordlistName, $wordlistDiscription, $userid, $isPublic)
     {
         $mysqli = Service::connectToDB();
         $result = mysqli_query($mysqli, "INSERT INTO dictionaries(dictionaryid, name, discription, dictionaryowner, ispublic) VALUES(NULL, '$wordlistName', '$wordlistDiscription', '$userid', '$isPublic')");
@@ -24,10 +32,46 @@ class Dictionary
         return $result;
     }
 
+    public static function updateDictionary($dictionaryId, $dictionaryName, $dictionaryDiscription, $isPublic)
+    {
+        $mysqli = Service::connectToDB();
+        return mysqli_query($mysqli, "UPDATE dictionaries SET name = '$dictionaryName', discription = '$dictionaryDiscription', ispublic = '$isPublic' WHERE dictionaryid = '$dictionaryId'");
+    }
+
+    public function removeDictionary($parameters): bool
+    {
+        $userid = Users::getUserId($_SESSION['username']);
+        $dictionaryid = $parameters[0];
+        if (self::isUserHasADictionary($userid, $dictionaryid)) {
+            $mysqli = Service::connectToDB();
+            $query = "DELETE FROM users_has_dictionaries WHERE users_userid = '$userid' AND dictionaries_dictionaryid = '$dictionaryid'";
+            $mysqli->query($query);
+            return true;
+        }
+        return false;
+    }
+
+    public function getAllDictionaries()
+    {
+        $mysqli = Service::connectToDB();
+        return $mysqli->query("SELECT * FROM dictionaries WHERE ispublic = 1")->fetch_all(MYSQLI_ASSOC);
+    }
+
     public static function isWordlistNameUsed($wordlistName): bool
     {
         $mysqli = Service::connectToDB();
         $query = "SELECT name FROM dictionaries WHERE name = '$wordlistName'";
+        $result = $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
+        $mysqli->close();
+        if (empty($result)) {
+            return false;
+        } else return true;
+    }
+
+    public static function isWordlistNameUsedExceptId($wordlistName, $id): bool
+    {
+        $mysqli = Service::connectToDB();
+        $query = "SELECT name FROM dictionaries WHERE name = '$wordlistName' AND dictionaryid != '$id'";
         $result = $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
         $mysqli->close();
         if (empty($result)) {
@@ -69,7 +113,7 @@ class Dictionary
 
     public function setTitle($id)
     {
-        return self::getWordlistName($id);
+        return self::getDictionaryName($id);
     }
 
     public function getWords($dictionaryid): string
@@ -104,16 +148,10 @@ class Dictionary
         return false;
     }
 
-    public function removeDictionary($parameters): bool
+    public function getFieldsContent($dictionaryId)
     {
-        $userid = Users::getUserId($_SESSION['username']);
-        $dictionaryid = $parameters[0];
-        if (self::isUserHasADictionary($userid, $dictionaryid)) {
-            $mysqli = Service::connectToDB();
-            $query = "DELETE FROM users_has_dictionaries WHERE users_userid = '$userid' AND dictionaries_dictionaryid = '$dictionaryid'";
-            $mysqli->query($query);
-            return true;
-        }
-        return false;
+        $mysqli = Service::connectToDB();
+        $query = "SELECT * FROM dictionaries WHERE dictionaryid = '$dictionaryId'";
+        return $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
     }
 }
