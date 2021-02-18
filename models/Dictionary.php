@@ -38,6 +38,14 @@ class Dictionary
         return mysqli_query($mysqli, "UPDATE dictionaries SET name = '$dictionaryName', discription = '$dictionaryDiscription', ispublic = '$isPublic' WHERE dictionaryid = '$dictionaryId'");
     }
 
+    public static function addDictionaryToUser($dictionaryid, $username)
+    {
+        $mysqli = Service::connectToDB();
+        $userid = Users::getUserId($username);
+        $query = "INSERT INTO users_has_dictionaries(users_userid, dictionaries_dictionaryid) VALUES('$userid', '$dictionaryid')";
+        return mysqli_query($mysqli, $query);
+    }
+
     public function removeDictionary($parameters): bool
     {
         $userid = Users::getUserId($_SESSION['username']);
@@ -53,8 +61,16 @@ class Dictionary
 
     public function getAllDictionaries()
     {
+        $userid = Users::getUserId($_SESSION['username']);
         $mysqli = Service::connectToDB();
-        return $mysqli->query("SELECT * FROM dictionaries WHERE ispublic = 1")->fetch_all(MYSQLI_ASSOC);
+        $result = $mysqli->query("SELECT * FROM dictionaries WHERE ispublic = 1 AND dictionaryid !=
+                                (SELECT
+                                  users_has_dictionaries.dictionaries_dictionaryid
+                                FROM users_has_dictionaries
+                                    WHERE users_has_dictionaries.users_userid = '$userid' )");
+        if($result) {
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else return false;
     }
 
     public static function isWordlistNameUsed($wordlistName): bool
@@ -68,7 +84,7 @@ class Dictionary
         } else return true;
     }
 
-    public static function isWordlistNameUsedExceptId($wordlistName, $id): bool
+    public static function isWordlistNameUsedExceptThis($wordlistName, $id): bool
     {
         $mysqli = Service::connectToDB();
         $query = "SELECT name FROM dictionaries WHERE name = '$wordlistName' AND dictionaryid != '$id'";
@@ -81,7 +97,7 @@ class Dictionary
 
     public static function checkWordlistName($wordlistName): bool
     {
-        if (preg_match("/[^(\s\w\-)]/u", $wordlistName) != 1 and Service::checkLength(4, 50, $wordlistName)) {
+        if (preg_match("/[^(\s\w\-\')]/u", $wordlistName) != 1 and Service::checkLength(4, 50, $wordlistName)) {
             return true;
         } else return false;
     }
@@ -116,21 +132,13 @@ class Dictionary
         return self::getDictionaryName($id);
     }
 
-    public function getWords($dictionaryid): string
+    public function getWords($dictionaryID)
     {
-        if (self::isUserHasADictionary($_SESSION['userid'], $dictionaryid)) {
-            $words = Words::getWordsFromDictionary($dictionaryid);
-            $result = "<div class='col-sm-4'><table class='table table-inverse'><tr><th>English word</th><th>Translation</th></tr>";
-            foreach ($words as $wordpare) {
-                $result .= "<tr><td>" . $wordpare['word'] . "</td><td>" . $wordpare['translation'] . "</td>";
-                if (self::isDictionaryOwner($dictionaryid)) {
-                    $result .= "<td><a href='" . $dictionaryid . "/" . $wordpare['wordid'] . "' >DEL</a></td>";
-                }
-                $result .= "</tr>";
-            }
-            $result .= "</table></div>";
-            return $result;
-        } else return 'error';
+        if (self::isUserHasADictionary($_SESSION['userid'], $dictionaryID)) {
+            $data = Words::getWordsFromDictionary($dictionaryID);
+            $data['dictionaryid'] = $dictionaryID;
+            return $data;
+        } else return 'Access denied.';
     }
 
     public function deleteWord($parameters)

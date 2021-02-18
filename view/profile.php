@@ -15,6 +15,7 @@
         $link = URL . "dictionary/" . $id;
         $removeLink = URL . 'dictionary/remove/' . $id;
         $updateLink = URL . 'dictionary/update/' . $id;
+        $deleteLink = URL . 'dictionary/delete/' . $id;
         ?>
         <!--           Wordlist generation       -->
         <div class="accordion-item">
@@ -29,15 +30,24 @@
                     <p><?php echo $discription ?></p>
                     <p>
                         <a class="btn btn-primary" href="<?php echo $link ?> ">Go</a>
-                        <a class="btn btn-warning" href="<?php echo $updateLink ?>">
-                            <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>
-                        </a>
-                        <button onclick="generateMod(<?php echo $id . ', \'' . $name . '\', \'' . $removeLink . '\'' ?>)"
-                                type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        <?php if(Dictionary::isDictionaryOwner($id)) { ?>
+                            <a class="btn btn-warning" href="<?php echo $updateLink ?>">
+                                <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>
+                            </a>
+                            <button onclick="generateModalForDelete(<?php echo $id . ', \'' . $name . '\', \'' . $deleteLink . '\'' ?>)"
+                                    type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="bottom" title="Delete wordlist">
+                                <i class="fa fa-trash-o fa-lg" aria-hidden="true"></i>
+                            </button>
+                        <?php } else { ?>
+                        <button onclick="generateModalForRemove(<?php echo $id . ', \'' . $name . '\', \'' . $removeLink . '\'' ?>)"
+                                type="button" class="btn btn-info" data-bs-toggle="modal"
                                 data-bs-toggle="tooltip"
-                                data-bs-placement="bottom" title="Delete wordlist">
+                                data-bs-placement="bottom" title="Remove wordlist">
                             <i class="fa fa-trash-o fa-lg" aria-hidden="true"></i>
                         </button>
+                        <?php } ?>
                     </p>
                 </div>
             </div>

@@ -13,7 +13,7 @@ class DictionaryController extends Controller
             $this->model = new Dictionary();
             $title = $this->model->setTitle($dictionaryid);
             $data = $this->model->getWords($dictionaryid);
-            $this->view->generate('dictionaryView.php', 'templateView.php', $data, $title);
+            $this->view->generate('dictionary.php', 'template.php', $data, $title);
         } else {
             header('Location: login');
         }
@@ -47,7 +47,7 @@ class DictionaryController extends Controller
     {
         if (Users::isAlreadyLogin()) {
             $title = 'Create dictionary - EnglishGenius';
-            $this->view->generate('dictionaryCreateUpdateView.php', 'templateView.php', NULL, $title);
+            $this->view->generate('dictionaryCreateUpdate.php', 'template.php', NULL, $title);
         } else {
             header('Location: login');
         }
@@ -60,7 +60,7 @@ class DictionaryController extends Controller
             $title = 'Update dictionary - EnglishGenius';
             $dictionaryid = $parameters[0];
             $data = $this->model->getFieldsContent($dictionaryid);
-            $this->view->generate('dictionaryCreateUpdateView.php', 'templateView.php', $data, $title);
+            $this->view->generate('dictionaryCreateUpdate.php', 'template.php', $data, $title);
         } else {
             header('Location: login');
         }
@@ -72,7 +72,7 @@ class DictionaryController extends Controller
             $this->model = new Dictionary();
             $title = 'Add dictionary - EnglishGenius';
             $data = $this->model->getAllDictionaries();
-            $this->view->generate('addDictionaryView.php', 'templateView.php', $data, $title);
+            $this->view->generate('dictionaryAdd.php', 'template.php', $data, $title);
         } else {
             header('Location: login');
         }

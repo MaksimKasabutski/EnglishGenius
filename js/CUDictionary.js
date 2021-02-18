@@ -26,10 +26,15 @@ CUDictionary.onsubmit = function (event) {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             let json = JSON.parse(xhr.responseText);
-            servResponse.style.display = 'block';
-            servResponse.textContent = json.message;
-            if(json.result == 'success') {
-                setTimeout('location.replace("/profile")',2000);
+            if(json.result === 'success') {
+                servResponse.classList.add('alert-success');
+                servResponse.style.display = 'block';
+                servResponse.textContent = json.message;
+                setTimeout('location.replace("/profile")', 1000);
+            } else if(json.result === 'error') {
+                servResponse.classList.add('alert-danger');
+                servResponse.style.display = 'block';
+                servResponse.textContent = json.message;
             }
         }
     }

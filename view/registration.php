@@ -7,7 +7,7 @@
     -webkit-box-pack: center;
     justify-content: center;">
 <div class='text-center' >
-    <div id="response" style="display: none;"></div>
+    <div id="response" class="alert" style="display: none;"></div>
     <form id="registrationForm" class="form-signin" method="POST">
         <h1 class="h3 mb-3 font-weight-normal">Sign up</h1>
 

@@ -21,10 +21,12 @@ registrationForm.onsubmit = function(event) {
             var json = JSON.parse(xhr.responseText);
             if (json.result === 'success') {
                 registrationForm.style.display = 'none';
+                servResponse.classList.add('alert-success');
                 servResponse.style.display = 'block';
                 servResponse.textContent = json.message;
                 setTimeout('location.replace("/profile")',1000);
             } else {
+                servResponse.classList.add('alert-danger');
                 servResponse.style.display = 'block';
                 servResponse.textContent = json.message;
             }

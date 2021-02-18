@@ -1,5 +1,6 @@
 <?php
 return array(
+    'api/dictionary/add' => 'dictionaryAPI/addDictionaryToUser',
     'api/dictionary/create' => 'dictionaryAPI/create',
     'api/dictionary/update' => 'dictionaryAPI/update',
     'dictionary/update/([0-9]+)' => 'dictionary/update/$1',

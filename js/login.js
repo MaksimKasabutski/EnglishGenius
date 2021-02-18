@@ -19,10 +19,13 @@ loginForm.onsubmit = function(event) {
             let json = JSON.parse(xhr.responseText);
             if (json.result === 'success') {
                 loginForm.style.display = 'none';
+                servResponse.classList.remove('alert-danger');
+                servResponse.classList.add('alert-success');
                 servResponse.style.display = 'block';
                 servResponse.textContent = json.message;
                 setTimeout('location.replace("/profile")',1000);
             } else {
+                servResponse.classList.add('alert-danger');
                 servResponse.style.display = 'block';
                 servResponse.textContent = json.message;
             }

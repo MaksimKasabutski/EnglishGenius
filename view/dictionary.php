@@ -1,10 +1,33 @@
-<nav aria-label="breadcrumb">
+<br>
+<nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+     aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/profile">Profile</a></li>
-        <li class="breadcrumb-item active" aria-current="page"><?php echo $title ?> </li>
+        <li class="breadcrumb-item active" aria-current="page"><?php echo $title ?></li>
     </ol>
 </nav>
-<?php echo $data; ?>
+
+<?php if (isset($wordpare['wordid'])) { ?>
+    <div class='col-sm-4'>
+        <table class='table table-inverse'>
+            <tr>
+                <th>English word</th>
+                <th>Translation</th>
+            </tr>
+            <?php
+            $dictionaryId = $data['dictionaryid'];
+            foreach ($data as $wordpare) {
+                $result = "<tr><td>" . $wordpare['word'] . "</td><td>" . $wordpare['translation'] . "</td>";
+                if (Dictionary::isDictionaryOwner($dictionaryId)) {
+                    $result .= "<td><a href='" . $dictionaryId . "/" . $wordpare['wordid'] . "' >DEL</a></td>";
+                }
+                $result .= "</tr>";
+                echo $result;
+            }
+            ?>
+        </table>
+    </div>
+<?php } else echo "There is nothing here yet."; ?>
 
 <div class="hystmodal" id="myModal" aria-hidden="true">
     <div class="hystmodal__wrap">

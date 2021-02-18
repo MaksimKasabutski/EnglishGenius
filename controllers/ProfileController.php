@@ -9,7 +9,7 @@ class ProfileController extends Controller
     {
         if (Users::isAlreadyLogin()) {
             $title = $_SESSION['username'];
-            $this->view->generate('profileView.php', 'templateView.php', Profile::getUsersLists($_SESSION['username']), $title);
+            $this->view->generate('profile.php', 'template.php', Profile::getUsersLists($_SESSION['username']), $title);
         } else {
             header('Location: login');
         }

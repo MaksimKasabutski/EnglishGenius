@@ -2,11 +2,7 @@
     display: inline-block;
     width: 500px;
     text-align: center;
-    margin: 30px auto;
-    background: #fff;
-    border-radius: 5px;
-    padding: 10px 0px;
-    font-size: 20px;
+    font-size: 1.2rem;
 }
 
 .initial-message {

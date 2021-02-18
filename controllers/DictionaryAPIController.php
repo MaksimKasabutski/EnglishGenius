@@ -34,7 +34,7 @@ class DictionaryAPIController
         echo json_encode($response);
     }
 
-    public function actionUpdate($parameters)
+    public function actionUpdate()
     {
         $request = json_decode(file_get_contents('php://input'), true);
 
@@ -46,7 +46,7 @@ class DictionaryAPIController
         } else $isPublic = 1;
 
 
-        if (Dictionary::isWordlistNameUsedExceptId($dictionaryName, $dictionaryId)) {
+        if (Dictionary::isWordlistNameUsedExceptThis($dictionaryName, $dictionaryId)) {
             $response = new Response('error', 'This name is already taken.');
             echo json_encode($response);
             return;
@@ -59,6 +59,20 @@ class DictionaryAPIController
             $response = new Response('success', 'Dictionary updated successfully');
         } else {
             $response = new Response('error', 'Something whent wrong');
+        }
+        echo json_encode($response);
+    }
+
+    public static function actionAddDictionaryToUser()
+    {
+        $request = json_decode(file_get_contents('php://input'), true);
+        $dictionaryId = Service::strCleaner($request['dictionaryId']);
+        $username = Service::strCleaner($request['username']);
+
+        if (Dictionary::addDictionaryToUser($dictionaryId, $username)) {
+            $response = new Response('success', '');
+        } else {
+            $response = new Response('error', '');
         }
         echo json_encode($response);
     }
