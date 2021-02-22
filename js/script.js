@@ -52,6 +52,7 @@ function generateModalForRemove(id, name, url) {
 }
 
 function addDictionaryToUser(dictionaryid, username) {
+    let addButton = document.getElementById('addButton');
     let xhr = new XMLHttpRequest();
     let body = JSON.stringify({"dictionaryId": dictionaryid, "username": username});
 
@@ -64,7 +65,8 @@ function addDictionaryToUser(dictionaryid, username) {
         if (xhr.readyState === 4 && xhr.status === 200) {
             let json = JSON.parse(xhr.responseText);
             if (json.result === 'success') {
-                alert('Added');
+                addButton.setAttribute('disabled', 'disabled');
+                addButton.innerHTML = 'Added';
             } else if (json.result === 'error') {
                 alert('Not added')
             }

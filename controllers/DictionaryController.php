@@ -43,6 +43,18 @@ class DictionaryController extends Controller
         }
     }
 
+    public function actionDeleteDictionary($parameters): bool
+    {
+        if (Users::isAlreadyLogin()) {
+            $this->model = new Dictionary();
+            if ($this->model->deleteDictionary($parameters)) {
+                header('Location: ' . $_SERVER['HTTP_REFERER']);
+            }
+        } else {
+            header('Location: login');
+        }
+    }
+
     public function actionCreate()
     {
         if (Users::isAlreadyLogin()) {

@@ -1,3 +1,4 @@
+<?php require_once ROOT . '/core/Controller.php'?>
 <br>
 <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
      aria-label="breadcrumb">
@@ -42,6 +43,14 @@
                     <label for="translation">Translation</label>
                     <input type="text" id="translation" autocomplete="off">
                 </div>
+                <label for="pos">PoS</label>
+                <select id="pos" class="form-select text-center center-block" aria-label="PoS" style="width: 190px">
+                    <option selected>-</option>
+                    <option value="noun">noun</option>
+                    <option value="verb">verb</option>
+                    <option value="adverb">adverb</option>
+                    <option value="adjective">adjective</option>
+                </select>
                 <input type="hidden" id="dictionaryid" value="<?php echo $_GET['id'] ?>">
                 <input type="submit" class="btn btn-primary" value="Add">
             </form>
@@ -51,7 +60,7 @@
 </div>
 <a href="#" role="button" class="btn btn-primary" data-hystmodal="#myModal">ADD WORD</a>
 
-
+<script src="/js/addWordIntoDictionary.js"></script>
 <script src="/library/hystModal-master/dist/hystmodal.min.js"></script>
 <script>
     const myModal = new HystModal({

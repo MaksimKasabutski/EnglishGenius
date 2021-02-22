@@ -59,6 +59,18 @@ class Dictionary
         return false;
     }
 
+    public function deleteDictionary($parameters): bool
+    {
+        $dictionaryid = $parameters[0];
+        if (self::isDictionaryOwner($dictionaryid)) {
+            $mysqli = Service::connectToDB();
+            $query = "DELETE FROM dictionaries WHERE dictionaryid = '$dictionaryid'";
+            $mysqli->query($query);
+            return true;
+        }
+        return false;
+    }
+
     public function getAllDictionaries()
     {
         $userid = Users::getUserId($_SESSION['username']);
@@ -68,7 +80,7 @@ class Dictionary
                                   users_has_dictionaries.dictionaries_dictionaryid
                                 FROM users_has_dictionaries
                                     WHERE users_has_dictionaries.users_userid = '$userid' )");
-        if($result) {
+        if ($result) {
             return $result->fetch_all(MYSQLI_ASSOC);
         } else return false;
     }

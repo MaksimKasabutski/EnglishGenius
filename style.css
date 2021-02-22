@@ -1,6 +1,5 @@
 #response {
     display: inline-block;
-    width: 500px;
     text-align: center;
     font-size: 1.2rem;
 }
@@ -38,11 +37,9 @@
 
 #modal_addWord_window {
     width: 500px;
-    height: 200px;
+    height: 230px;
     text-align: center;
     padding: 15px;
-    padding-top: 25px;
-    border-radius: 10px;
     position: absolute;
     top: 0;
     right: 0;
@@ -91,3 +88,6 @@
     display: inline-block;
 }
 
+#pos {
+    margin: 5px auto;
+}

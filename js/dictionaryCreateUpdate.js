@@ -1,12 +1,12 @@
-let CUDictionary = document.getElementById('CUDictionary');
+let DictionaryCreateUpdate = document.getElementById('dictionaryCreateUpdate');
 let servResponse = document.getElementById('response');
 
-CUDictionary.onsubmit = function (event) {
+DictionaryCreateUpdate.onsubmit = function (event) {
     event.preventDefault();
 
     let dictionaryId = document.getElementById('dictionaryid').value;
-    let dictionaryName = document.getElementById('wordlistName').value;
-    let dictionaryDiscription = document.getElementById('wordlistDiscription').value;
+    let dictionaryName = document.getElementById('dictionaryName').value;
+    let dictionaryDiscription = document.getElementById('dictionaryDiscription').value;
     let isPublic = document.getElementById('isPublic').checked;
     let status = document.getElementById('status').value;
 

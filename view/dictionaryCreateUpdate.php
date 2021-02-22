@@ -28,19 +28,19 @@ if($value) {
 </nav>
 <div id="response" class="alert" style="display: none"></div>
 
-<form id="CUDictionary" method="post" class="col-4">
+<form id="dictionaryCreateUpdate" method="post" class="col-4">
     <br>
     <div class="mb-3">
-        <label for="wordlistName" class="form-label">Wordlist name</label>
-        <input type="text" class="form-control" id="wordlistName" placeholder="Wordlist Name"
+        <label for="dictionaryName" class="form-label">Dictionary name</label>
+        <input type="text" class="form-control" id="dictionaryName" placeholder="Dictionary Name"
                aria-describedby="passwordHelpBlock" value="<?php echo $nameField ?>" required>
         <div id="passwordHelpBlock" class="form-text">
             Must be 8-20 characters long.
         </div>
     </div>
     <div class="mb-3">
-        <label for="wordlistDiscription" class="form-label">Wordlist discription</label>
-        <textarea class="form-control" id="wordlistDiscription" rows="3" required><?php echo $discriptionField ?></textarea>
+        <label for="dictionaryDiscription" class="form-label">Wordlist discription</label>
+        <textarea class="form-control" id="dictionaryDiscription" rows="3" required><?php echo $discriptionField ?></textarea>
     </div>
     <div class="mb-3 form-check">
         <label class="form-check-label" for="isPublic">Make public</label>
@@ -54,4 +54,4 @@ if($value) {
     Access denied
 </div>
 <?php } ?>
-<script src='/js/CUDictionary.js'></script>
+<script src='/js/dictionaryCreateUpdate.js'></script>

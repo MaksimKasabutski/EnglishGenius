@@ -1,32 +1,47 @@
 <?php
 require_once ROOT . '/models/Users.php';
+require_once ROOT . '/models/Words.php';
 require_once ROOT . '/models/Dictionary.php';
 require_once ROOT . '/components/Security.php';
 require_once ROOT . '/components/Response.php';
 
 class DictionaryAPIController
 {
+    protected $request;
+    protected $dictionaryId;
+    protected $dictionaryName;
+    protected $dictionaryDiscription;
+    protected $username;
+    protected $isPublic;
+    protected $userid;
+    protected $engWord;
+    protected $rusWord;
+
+    public function __construct()
+    {
+        $this->request = json_decode(file_get_contents('php://input'), true);
+        $this->dictionaryId = isset($this->request['dictionaryId']) ? $this->request['dictionaryId'] : NULL;
+        $this->dictionaryName = Service::strCleaner(isset($this->request['dictionaryName']) ? $this->request['dictionaryName'] : NULL);
+        $this->dictionaryDiscription = Service::strCleaner(isset($this->request['dictionaryDiscription']) ? $this->request['dictionaryDiscription'] : NULL);
+        $this->isPublic = isset($this->request['isPublic']) ? ($this->request['isPublic'] ? 1 : 0 ) : NULL;
+        $this->username = $_SESSION['username'];
+        $this->userid = $_SESSION['userid'];
+        $this->engWord = Service::strCleaner(mb_strtolower(isset($this->request['englishWord']) ? $this->request['englishWord'] : NULL ));
+        $this->rusWord = Service::strCleaner(mb_strtolower(isset($this->request['translation']) ? $this->request['translation'] : NULL));
+    }
+
     public function actionCreate()
     {
-        $request = json_decode(file_get_contents('php://input'), true);
-
-        $dictionaryName = Service::strCleaner($request['dictionaryName']);
-        $dictionaryDiscription = Service::strCleaner($request['dictionaryDiscription']);
-        if (!$request['isPublic']) {
-            $isPublic = 0;
-        } else $isPublic = 1;
-        $userid = $_SESSION['userid'];
-
-        if (Dictionary::isWordlistNameUsed($dictionaryName)) {
+        if (Dictionary::isWordlistNameUsed($this->dictionaryName)) {
             $response = new Response('error', 'This name is already taken.');
             echo json_encode($response);
             return;
-        } elseif (!Dictionary::checkWordlistName($dictionaryName)) {
+        } elseif (!Dictionary::checkWordlistName($this->dictionaryName)) {
             $response = new Response('error', 'Wrong name.');
             echo json_encode($response);
             return;
         }
-        if (Dictionary::createDictionary($dictionaryName, $dictionaryDiscription, $userid, $isPublic)) {
+        if (Dictionary::createDictionary($this->dictionaryName, $this->dictionaryDiscription, $this->userid, $this->isPublic)) {
             $response = new Response('success', 'Wordlist created successfully');
         } else {
             $response = new Response('error', 'Something whent wrong');
@@ -36,26 +51,16 @@ class DictionaryAPIController
 
     public function actionUpdate()
     {
-        $request = json_decode(file_get_contents('php://input'), true);
-
-        $dictionaryId = Service::strCleaner($request['dictionaryId']);
-        $dictionaryName = Service::strCleaner($request['dictionaryName']);
-        $dictionaryDiscription = Service::strCleaner($request['dictionaryDiscription']);
-        if (!$request['isPublic']) {
-            $isPublic = 0;
-        } else $isPublic = 1;
-
-
-        if (Dictionary::isWordlistNameUsedExceptThis($dictionaryName, $dictionaryId)) {
+        if (Dictionary::isWordlistNameUsedExceptThis($this->dictionaryName, $this->dictionaryId)) {
             $response = new Response('error', 'This name is already taken.');
             echo json_encode($response);
             return;
-        } elseif (!Dictionary::checkWordlistName($dictionaryName)) {
+        } elseif (!Dictionary::checkWordlistName($this->dictionaryName)) {
             $response = new Response('error', 'Wrong name.');
             echo json_encode($response);
             return;
         }
-        if (Dictionary::updateDictionary($dictionaryId, $dictionaryName, $dictionaryDiscription, $isPublic)) {
+        if (Dictionary::updateDictionary($this->dictionaryId, $this->dictionaryName, $this->dictionaryDiscription, $this->isPublic)) {
             $response = new Response('success', 'Dictionary updated successfully');
         } else {
             $response = new Response('error', 'Something whent wrong');
@@ -63,13 +68,9 @@ class DictionaryAPIController
         echo json_encode($response);
     }
 
-    public static function actionAddDictionaryToUser()
+    public function actionAddDictionaryToUser()
     {
-        $request = json_decode(file_get_contents('php://input'), true);
-        $dictionaryId = Service::strCleaner($request['dictionaryId']);
-        $username = Service::strCleaner($request['username']);
-
-        if (Dictionary::addDictionaryToUser($dictionaryId, $username)) {
+        if (Dictionary::addDictionaryToUser($this->dictionaryId, $this->username)) {
             $response = new Response('success', '');
         } else {
             $response = new Response('error', '');
