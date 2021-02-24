@@ -10,7 +10,7 @@ addWordIntoDictionary.onsubmit = function (event) {
     let dictionaryid = document.getElementById('dictionaryid').value;
 
     let xhr = new XMLHttpRequest();
-    let body = JSON.stringify({"englishWord": englishWord, "translation": translation, "dictionaryid": dictionaryid});
+    let body = JSON.stringify({"englishWord": englishWord, "translation": translation, "dictionaryId": dictionaryid});
 
     xhr.open("POST", '/api/word/add', true);
     xhr.setRequestHeader('Content-Type', 'application/json')
