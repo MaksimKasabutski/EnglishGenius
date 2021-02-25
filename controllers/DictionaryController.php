@@ -23,7 +23,7 @@ class DictionaryController extends Controller
     {
         if (Users::isAlreadyLogin()) {
             $this->model = new Dictionary();
-            if ($this->model->deleteWord($parameters)) {
+            if (WordAPIController::deleteWord($parameters)) {
                 header('Location: ' . $_SERVER['HTTP_REFERER']);
             } else echo 'error';
         } else {

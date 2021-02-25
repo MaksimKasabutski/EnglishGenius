@@ -7,21 +7,28 @@
         <li class="breadcrumb-item active" aria-current="page"><?php echo $title ?></li>
     </ol>
 </nav>
-<a href="#" role="button" class="btn btn-primary" data-hystmodal="#myModal">ADD WORD</a><br>
-<div class='col-sm-4'>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+        data-bs-toggle="tooltip" data-bs-target="#addword"
+        data-bs-placement="bottom" title="Remove wordlist">ADD WORD
+</button>
+<div class='col-6'>
     <table class='table table-inverse'>
         <tr>
-            <th>English word</th>
-            <th>Translation</th>
+            <th class="col-5">English word</th>
+            <th class="col-5">Translation</th>
+            <th class="col-2">Actions</th>
         </tr>
 
         <?php
+        //date from Dictionary->getWords => DictionaryController->actionData
         $dictionaryId = array_pop($data);
         if (!empty($data)) {
             foreach ($data as $wordpare) {
-                $result = "<tr><td>" . $wordpare['word'] . "</td><td>" . $wordpare['translation'] . "</td>";
+                $result = "<tr id='" . $wordpare['wordid'] . "'><td>" . $wordpare['word'] . " <div class='pos'>" . $wordpare['pos'] . "</div></td><td>" . $wordpare['translation'] . "</td>";
                 if (Dictionary::isDictionaryOwner($dictionaryId)) {
-                    $result .= "<td><a href='" . $dictionaryId . "/" . $wordpare['wordid'] . "' >DEL</a></td>";
+                    $wordpareData = $wordpare['wordid'] . ", '" . $wordpare['word'] . "', '" . $wordpare['pos'] . "', '" . $wordpare['translation'] . "'";
+                    $result .= "<td><button class='btn btn-primary btn-sm' onclick='deleteWord(" . $dictionaryId . ", " . $wordpare['wordid'] . ")'>Del</button>";
+                    $result .= "<button class='btn btn-primary btn-sm' onclick=\"editWord(" . $wordpareData . ")\">Edit</button></td>";
                 }
                 $result .= "</tr>";
                 echo $result;
@@ -31,40 +38,44 @@
 
     </table>
 </div>
-<div class="hystmodal" id="myModal" aria-hidden="true">
-    <div class="hystmodal__wrap">
-        <div id="modal_addWord_window" class="hystmodal__window" role="dialog" aria-modal="true">
-            <button data-hystclose class="hystmodal__close">Закрыть</button>
+
+<div class="modal fade" id="addword" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add word</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
             <form id="addWordIntoDictionary" method="POST">
-                <div class="modal_addWord_window_left">
-                    <label for="englishWord">English</label>
-                    <input type="text" id="englishWord" autocomplete="off">
+                <div class="modal-body">
+                    <label for="englishWord" class="form-label">English</label>
+                    <input type="text" class="form-control" id="englishWord" autocomplete="off">
+                    <div class="form-text">Must be 1-25 english letters long.</div>
+                    <br>
+                    <label for="translation" class="form-label">Translate</label>
+                    <input type="text" class="form-control" id="translation" autocomplete="off">
+                    <div class="form-text">Must be 1-25 russian letters long.</div>
+                    <br>
+                    <label for="pos">Part of speech</label>
+                    <select id="pos" class="form-select">
+                        <option selected>-</option>
+                        <option value="noun">noun</option>
+                        <option value="verb">verb</option>
+                        <option value="adverb">adverb</option>
+                        <option value="adjective">adjective</option>
+                    </select>
+                    <input type="hidden" id="dictionaryid" value="<?php echo $dictionaryId ?>">
                 </div>
-                <div class="modal_addWord_window_right">
-                    <label for="translation">Translation</label>
-                    <input type="text" id="translation" autocomplete="off">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary" value="Add">
                 </div>
-                <label for="pos">PoS</label>
-                <select id="pos" class="form-select text-center center-block" aria-label="PoS" style="width: 190px">
-                    <option selected>-</option>
-                    <option value="noun">noun</option>
-                    <option value="verb">verb</option>
-                    <option value="adverb">adverb</option>
-                    <option value="adjective">adjective</option>
-                </select>
-                <input type="hidden" id="dictionaryid" value="<?php echo $dictionaryId ?>">
-                <input type="submit" class="btn btn-primary" value="Add">
             </form>
-            <div id="response" style="display: none"></div>
+            <div id="response" class="alert" style="display: none; width: 90%; margin: 0 auto 15px auto;"></div>
         </div>
     </div>
 </div>
 
-
+<script src="/js/word.js"></script>
 <script src="/js/addWordIntoDictionary.js"></script>
-<script src="/library/hystModal-master/dist/hystmodal.min.js"></script>
-<script>
-    const myModal = new HystModal({
-        linkAttributeName: "data-hystmodal",
-    });
-</script>

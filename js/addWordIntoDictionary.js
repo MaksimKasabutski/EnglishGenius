@@ -1,17 +1,23 @@
-let addWordIntoDictionary = document.getElementById('addWordIntoDictionary');
+let form = document.getElementById('addWordIntoDictionary');
 let servResponse = document.getElementById('response');
-let modalWindow = document.getElementById('modal_addWord_window');
 
-addWordIntoDictionary.onsubmit = function (event) {
+form.onsubmit = function (event) {
     event.preventDefault();
 
     let englishWord = document.getElementById('englishWord').value;
     let translation = document.getElementById('translation').value;
     let dictionaryid = document.getElementById('dictionaryid').value;
+    let pos = document.getElementById('pos').value;
 
     let xhr = new XMLHttpRequest();
-    let body = JSON.stringify({"englishWord": englishWord, "translation": translation, "dictionaryId": dictionaryid});
+    let body = JSON.stringify({
+        "englishWord": englishWord,
+        "translation": translation,
+        "dictionaryId": dictionaryid,
+        "pos": pos
+    });
 
+    // /api/word/add -> WordAPIController/actionAddWord
     xhr.open("POST", '/api/word/add', true);
     xhr.setRequestHeader('Content-Type', 'application/json')
     xhr.send(body);
@@ -19,15 +25,15 @@ addWordIntoDictionary.onsubmit = function (event) {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             let json = JSON.parse(xhr.responseText);
-            modalWindow.style.height = '260px';
-            servResponse.style.display = 'block';
             servResponse.textContent = json.message;
-            if (json.result == 'success') {
-                modalWindow.style.height = '260px';
-                document.getElementById("englishWord").value = "";
-                document.getElementById('translation').value = "";
-                setTimeout('servResponse.style.display = \'none\'; modalWindow.style.height = \'230px\';', 1000);
-
+            servResponse.style.display = 'block';
+            if (json.result === 'error') {
+                servResponse.classList.add('alert-danger');
+            } else if (json.result === 'success') {
+                servResponse.classList.remove('alert-danger');
+                servResponse.classList.add('alert-success');
+                form.reset();
+                setTimeout('servResponse.style.display = \'none\'', 1500);
             }
         }
     }

@@ -27,6 +27,7 @@ DictionaryCreateUpdate.onsubmit = function (event) {
         if (xhr.readyState === 4 && xhr.status === 200) {
             let json = JSON.parse(xhr.responseText);
             if(json.result === 'success') {
+                servResponse.classList.remove('alert-danger');
                 servResponse.classList.add('alert-success');
                 servResponse.style.display = 'block';
                 servResponse.textContent = json.message;

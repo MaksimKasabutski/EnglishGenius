@@ -87,7 +87,9 @@
     margin-left: auto;
     display: inline-block;
 }
-
-#pos {
-    margin: 5px auto;
+.pos {
+    display: inline-block;
+    color: #737373;
+    font-size: 13px;
+    margin-left: 5px;
 }

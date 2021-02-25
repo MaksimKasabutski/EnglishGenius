@@ -38,6 +38,18 @@ class Dictionary
         return mysqli_query($mysqli, "UPDATE dictionaries SET name = '$dictionaryName', discription = '$dictionaryDiscription', ispublic = '$isPublic' WHERE dictionaryid = '$dictionaryId'");
     }
 
+    public function getWords($dictionaryId)
+    {
+        if (self::isUserHasADictionary($_SESSION['userid'], $dictionaryId)) {
+            $mysqli = Service::connectToDB();
+            $query = "SELECT wordid, word, translation, pos FROM wordlist WHERE dictionaryid = '$dictionaryId'";
+            $data = $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
+            $mysqli->close();
+            $data['dictionaryid'] = $dictionaryId;
+            return $data;
+        } else return 'Access denied.';
+    }
+
     public static function addDictionaryToUser($dictionaryid, $username)
     {
         $mysqli = Service::connectToDB();
@@ -142,30 +154,6 @@ class Dictionary
     public function setTitle($id)
     {
         return self::getDictionaryName($id);
-    }
-
-    public function getWords($dictionaryID)
-    {
-        if (self::isUserHasADictionary($_SESSION['userid'], $dictionaryID)) {
-            $data = Words::getWordsFromDictionary($dictionaryID);
-            $data['dictionaryid'] = $dictionaryID;
-            return $data;
-        } else return 'Access denied.';
-    }
-
-    public function deleteWord($parameters)
-    {
-
-        $dictionaryid = $parameters[0];
-        $wordid = $parameters[1];
-        if (self::isDictionaryOwner($dictionaryid)) {
-            $result = false;
-            $mysqli = Service::connectToDB();
-            $result = mysqli_query($mysqli, "DELETE FROM wordlist WHERE wordid = '$wordid'");
-            $mysqli->close();
-            return $result;
-        }
-        return false;
     }
 
     public function getFieldsContent($dictionaryId)

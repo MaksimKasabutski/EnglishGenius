@@ -14,8 +14,7 @@ class DictionaryAPIController
     protected $username;
     protected $isPublic;
     protected $userid;
-    protected $engWord;
-    protected $rusWord;
+
 
     public function __construct()
     {
@@ -26,8 +25,6 @@ class DictionaryAPIController
         $this->isPublic = isset($this->request['isPublic']) ? ($this->request['isPublic'] ? 1 : 0 ) : NULL;
         $this->username = $_SESSION['username'];
         $this->userid = $_SESSION['userid'];
-        $this->engWord = Service::strCleaner(mb_strtolower(isset($this->request['englishWord']) ? $this->request['englishWord'] : NULL ));
-        $this->rusWord = Service::strCleaner(mb_strtolower(isset($this->request['translation']) ? $this->request['translation'] : NULL));
     }
 
     public function actionCreate()

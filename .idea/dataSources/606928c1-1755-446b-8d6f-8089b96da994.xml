@@ -1066,19 +1066,25 @@ dictionaries_dictionaryid</ColNames>
       <DataType>char(25)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="320" parent="291" name="fk_wordlist_dictionaries1_idx">
+    <column id="320" parent="291" name="pos">
+      <Position>5</Position>
+      <DataType>char(10)|0s</DataType>
+    </column>
+    <index id="321" parent="291" name="fk_wordlist_dictionaries1_idx">
       <ColNames>dictionaryid</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="321" parent="291" name="PRIMARY">
+    <key id="322" parent="291" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>wordid</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="322" parent="291" name="fk_wordlist_dictionaries1">
+    <foreign-key id="323" parent="291" name="fk_wordlist_dictionaries1">
       <ColNames>dictionaryid</ColNames>
       <RefTableName>dictionaries</RefTableName>
       <RefColNames>dictionaryid</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
     </foreign-key>
   </database-model>
 </dataSource>

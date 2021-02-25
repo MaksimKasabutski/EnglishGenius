@@ -60,7 +60,6 @@ function addDictionaryToUser(dictionaryid, username) {
     xhr.setRequestHeader('Content-Type', 'application/json')
     xhr.send(body);
 
-
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             let json = JSON.parse(xhr.responseText);
