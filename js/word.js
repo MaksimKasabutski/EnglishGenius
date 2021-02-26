@@ -19,6 +19,7 @@ function deleteWord(dictionaryid, wordid) {
 
 function editWord(wordid, word, pos, translate) {
     let row = document.getElementById(wordid);
+    row.style.display = 'none';
     let html = '<td>' +
             '<input type="text" value="' + word + '">' +
             '<select id="pos" class="form-select">\n' +
@@ -35,7 +36,12 @@ function editWord(wordid, word, pos, translate) {
         '</td>' +
         '<td>' +
         '   <button class="btn btn-primary btn-sm">Save</button>' +
+        '   <button class="btn btn-primary btn-sm" onclick="cancel()">Cancel</button>' +
         '</td>';
     $(row).empty();
     $(row).append(html);
+}
+
+function cancel(row, rowContent) {
+    row.innerHTML = rowContent;
 }

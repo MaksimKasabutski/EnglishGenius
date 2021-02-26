@@ -93,3 +93,11 @@
     font-size: 13px;
     margin-left: 5px;
 }
+select#pos {
+    display: inline-block;
+    margin-left: 5px;
+    width: 120px;
+}
+.ml5 {
+    margin-left: 5px;
+}

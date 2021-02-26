@@ -11,7 +11,7 @@
         data-bs-toggle="tooltip" data-bs-target="#addword"
         data-bs-placement="bottom" title="Remove wordlist">ADD WORD
 </button>
-<div class='col-6'>
+<div class='col-8'>
     <table class='table table-inverse'>
         <tr>
             <th class="col-5">English word</th>
@@ -28,7 +28,7 @@
                 if (Dictionary::isDictionaryOwner($dictionaryId)) {
                     $wordpareData = $wordpare['wordid'] . ", '" . $wordpare['word'] . "', '" . $wordpare['pos'] . "', '" . $wordpare['translation'] . "'";
                     $result .= "<td><button class='btn btn-primary btn-sm' onclick='deleteWord(" . $dictionaryId . ", " . $wordpare['wordid'] . ")'>Del</button>";
-                    $result .= "<button class='btn btn-primary btn-sm' onclick=\"editWord(" . $wordpareData . ")\">Edit</button></td>";
+                    $result .= "<button class='btn btn-primary btn-sm ml5' onclick=\"editWord(" . $wordpareData . ")\">Edit</button></td>";
                 }
                 $result .= "</tr>";
                 echo $result;
