@@ -26,4 +26,41 @@ class Words
             default: return NULL;
         }
     }
+
+    public static function wordValidation($engWord, $rusWord)
+    {
+        if (Service::isEng($engWord)) {
+            $response = new Response('error', 'Wrong english word');
+            return $response;
+        } elseif (Service::isRus($rusWord)) {
+            $response = new Response('error', 'Wrong translation');
+            return $response;
+        } elseif (!Service::checkLength(1, 25, $engWord) or !Service::checkLength(1, 25, $rusWord)) {
+            $response = new Response('error', 'The words must be from 1 to 25 symbols.');
+            return $response;
+        }
+        return NULL;
+    }
+
+    public static function updateWord($engWord, $rusWord, $wordid, $pos)
+    {
+        $mysqli = Service::connectToDB();
+        $query = "UPDATE wordlist SET word = '$engWord', translation = '$rusWord', pos = '$pos' WHERE wordid = '$wordid'";
+        return mysqli_query($mysqli, $query);
+    }
+
+    public static function getWordContent($wordid)
+    {
+        $mysqli = Service::connectToDB();
+        $query = "SELECT wordid, word, translation, pos FROM wordlist WHERE wordid = '$wordid'";
+        return $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public static function getDictionaryName($wordid): string
+    {
+        $mysqli = Service::connectToDB();
+        $query = "SELECT name FROM dictionaries WHERE dictionaryid = (SELECT dictionaryid FROM wordlist WHERE wordid = '$wordid')";
+        $result =  $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
+        return $result[0]['name'];
+    }
 }

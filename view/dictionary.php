@@ -9,7 +9,7 @@
 </nav>
 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
         data-bs-toggle="tooltip" data-bs-target="#addword"
-        data-bs-placement="bottom" title="Remove wordlist">ADD WORD
+        data-bs-placement="bottom">ADD WORD
 </button>
 <div class='col-8'>
     <table class='table table-inverse'>
@@ -26,9 +26,12 @@
             foreach ($data as $wordpare) {
                 $result = "<tr id='" . $wordpare['wordid'] . "'><td>" . $wordpare['word'] . " <div class='pos'>" . $wordpare['pos'] . "</div></td><td>" . $wordpare['translation'] . "</td>";
                 if (Dictionary::isDictionaryOwner($dictionaryId)) {
+                    $updateLink = URL . 'word/update/' . $wordpare['wordid'];
                     $wordpareData = $wordpare['wordid'] . ", '" . $wordpare['word'] . "', '" . $wordpare['pos'] . "', '" . $wordpare['translation'] . "'";
-                    $result .= "<td><button class='btn btn-primary btn-sm' onclick='deleteWord(" . $dictionaryId . ", " . $wordpare['wordid'] . ")'>Del</button>";
-                    $result .= "<button class='btn btn-primary btn-sm ml5' onclick=\"editWord(" . $wordpareData . ")\">Edit</button></td>";
+                    $result .= "<td>\n<button class='btn btn-primary btn-sm' onclick='deleteWord(" . $dictionaryId . ", " . $wordpare['wordid'] . ")'>Del</button>\n";
+                    $result .= '<a class="btn btn-primary btn-sm ml5" href="'. $updateLink .'">
+                                    Edit
+                                </a></td>';
                 }
                 $result .= "</tr>";
                 echo $result;
@@ -39,8 +42,7 @@
     </table>
 </div>
 
-<div class="modal fade" id="addword" tabindex="-1" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
+<div class="modal fade" id="addword" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

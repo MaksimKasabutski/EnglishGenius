@@ -1,7 +1,9 @@
 <?php
 return array(
-    'api/word/add' => 'wordAPI/addWord',
-    'api/word/delete' => 'wordAPI/deleteWord',
+    'api/word/update' => 'wordAPI/update',
+    'api/word/add' => 'wordAPI/add',
+    'api/word/delete' => 'wordAPI/delete',
+    'word/update/([0-9]+)' => 'word/update/$1',
     'api/dictionary/add' => 'dictionaryAPI/addDictionaryToUser',
     'api/dictionary/create' => 'dictionaryAPI/create',
     'api/dictionary/update' => 'dictionaryAPI/update',

@@ -1,6 +1,8 @@
 function deleteWord(dictionaryid, wordid) {
     let xhr = new XMLHttpRequest();
     let body = JSON.stringify({"dictionaryId": dictionaryid, "wordid": wordid});
+
+    // URL -> WordAPIController/actionDeleteWord
     xhr.open("POST", '/api/word/delete', true);
     xhr.setRequestHeader('Content-Type', 'application/json')
     xhr.send(body);
@@ -17,31 +19,44 @@ function deleteWord(dictionaryid, wordid) {
     }
 }
 
-function editWord(wordid, word, pos, translate) {
-    let row = document.getElementById(wordid);
-    row.style.display = 'none';
-    let html = '<td>' +
-            '<input type="text" value="' + word + '">' +
-            '<select id="pos" class="form-select">\n' +
-                '<option selected value="'+pos+'">'+pos+'</option>                        ' +
-                '<option>-</option>\n' +
-'                <option value="noun">noun</option>\n' +
-'                <option value="verb">verb</option>\n' +
-'                <option value="adverb">adverb</option>\n' +
-'                <option value="adjective">adjective</option>\n' +
-        '    </select>' +
-        '</td>' +
-        '<td>' +
-        '   <input type="text" value="'+translate+'">' +
-        '</td>' +
-        '<td>' +
-        '   <button class="btn btn-primary btn-sm">Save</button>' +
-        '   <button class="btn btn-primary btn-sm" onclick="cancel()">Cancel</button>' +
-        '</td>';
-    $(row).empty();
-    $(row).append(html);
-}
+let updateForm = document.getElementById('updateWord');
+updateForm.onsubmit = function (event) {
+    event.preventDefault();
 
-function cancel(row, rowContent) {
-    row.innerHTML = rowContent;
+    let servResponse = document.getElementById('response');
+    let dictionaryid = document.getElementById('dictionaryid').value;
+    let englishWord = document.getElementById('englishWord').value;
+    let translation = document.getElementById('translation').value;
+    let wordid = document.getElementById('wordid').value;
+    let pos = document.getElementById('pos').value;
+
+    let xhr = new XMLHttpRequest();
+    let body = JSON.stringify({
+        "englishWord": englishWord,
+        "translation": translation,
+        "wordid": wordid,
+        "pos": pos
+    });
+
+    // URL -> WordAPIController/actionUpdate
+    xhr.open("POST", '/api/word/update', true);
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.send(body);
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            let json = JSON.parse(xhr.responseText);
+            if(json.result === 'success') {
+                servResponse.classList.remove('alert-danger');
+                servResponse.classList.add('alert-success');
+                servResponse.style.display = 'block';
+                servResponse.textContent = json.message;
+                setTimeout('location.replace("/dictionary/'+dictionaryid+'")', 1000);
+            } else if(json.result === 'error') {
+                servResponse.classList.add('alert-danger');
+                servResponse.style.display = 'block';
+                servResponse.textContent = json.message;
+            }
+        }
+    }
 }

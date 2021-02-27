@@ -39,7 +39,7 @@ if($value) {
         </div>
     </div>
     <div class="mb-3">
-        <label for="dictionaryDiscription" class="form-label">Wordlist discription</label>
+        <label for="dictionaryDiscription" class="form-label">Dictionary discription</label>
         <textarea class="form-control" id="dictionaryDiscription" rows="3" required><?php echo $discriptionField ?></textarea>
     </div>
     <div class="mb-3 form-check">

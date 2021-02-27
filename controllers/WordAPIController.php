@@ -3,10 +3,10 @@ require_once ROOT . '/controllers/DictionaryAPIController.php';
 
 class WordAPIController extends DictionaryAPIController
 {
-    private $pos;
-    private $engWord;
-    private $rusWord;
-    private $wordid;
+    protected $pos;
+    protected $engWord;
+    protected $rusWord;
+    protected $wordid;
 
     public function __construct()
     {
@@ -17,7 +17,7 @@ class WordAPIController extends DictionaryAPIController
         $this->wordid = isset($this->request['wordid']) ? $this->request['wordid'] : NULL;
     }
 
-    public function actionDeleteWord($parameters)
+    public function actionDelete($parameters)
     {
         if (Dictionary::isDictionaryOwner($this->dictionaryId) and $this->wordid) {
             if (mysqli_query(Service::connectToDB(), "DELETE FROM wordlist WHERE wordid = '$this->wordid'")) {
@@ -28,23 +28,30 @@ class WordAPIController extends DictionaryAPIController
         } else echo json_encode(new Response('error', ''));
     }
 
-    public function actionAddWord()
+    public function actionAdd()
     {
-        if (Service::isEng($this->engWord)) {
-            $response = new Response('error', 'Wrong english word');
-            echo json_encode($response);
-            return;
-        } elseif (Service::isRus($this->rusWord)) {
-            $response = new Response('error', 'Wrong translation');
-            echo json_encode($response);
-            return;
-        } elseif (!Service::checkLength(1, 25, $this->engWord) or !Service::checkLength(1, 25, $this->rusWord)) {
-            $response = new Response('error', 'The words must be from 1 to 25 symbols.');
+        $response = Words::wordValidation($this->engWord, $this->rusWord);
+        if ($response) {
             echo json_encode($response);
             return;
         }
         if (Words::addWordIntoDictionary($this->engWord, $this->rusWord, $this->dictionaryId, $this->pos)) {
             $response = new Response('success', 'Word successfully added');
+        } else {
+            $response = new Response('error', 'Something whent wrong');
+        }
+        echo json_encode($response);
+    }
+
+    public function actionUpdate()
+    {
+        $response = Words::wordValidation($this->engWord, $this->rusWord);
+        if ($response) {
+            echo json_encode($response);
+            return;
+        }
+        if (Words::updateWord($this->engWord, $this->rusWord, $this->wordid, $this->pos)) {
+            $response = new Response('success', 'Word successfully updated');
         } else {
             $response = new Response('error', 'Something whent wrong');
         }

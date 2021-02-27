@@ -1,7 +1,7 @@
-let form = document.getElementById('addWordIntoDictionary');
+let addForm = document.getElementById('addWordIntoDictionary');
 let servResponse = document.getElementById('response');
 
-form.onsubmit = function (event) {
+addForm.onsubmit = function (event) {
     event.preventDefault();
 
     let englishWord = document.getElementById('englishWord').value;
@@ -17,7 +17,7 @@ form.onsubmit = function (event) {
         "pos": pos
     });
 
-    // /api/word/add -> WordAPIController/actionAddWord
+    // URL -> WordAPIController/actionAdd
     xhr.open("POST", '/api/word/add', true);
     xhr.setRequestHeader('Content-Type', 'application/json')
     xhr.send(body);
@@ -32,25 +32,9 @@ form.onsubmit = function (event) {
             } else if (json.result === 'success') {
                 servResponse.classList.remove('alert-danger');
                 servResponse.classList.add('alert-success');
-                form.reset();
+                addForm.reset();
                 setTimeout('servResponse.style.display = \'none\'', 1500);
             }
-        }
-    }
-}
-
-function DeleteWord(dictionaryId) {
-    let xhr = new XMLHttpRequest();
-    let body = JSON.stringify({"dictionaryid": dictionaryId});
-
-    xhr.open("POST", '/formshandlers/deleteWord.php', true);
-    xhr.setRequestHeader('Content-Type', 'application/json')
-    xhr.send(body);
-
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            let json = JSON.parse(xhr.responseText);
-            alert(json.message);
         }
     }
 }
