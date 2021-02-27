@@ -43,7 +43,7 @@ class DictionaryController extends Controller
         }
     }
 
-    public function actionDeleteDictionary($parameters): bool
+    public function actionDeleteDictionary($parameters)
     {
         if (Users::isAlreadyLogin()) {
             $this->model = new Dictionary();
