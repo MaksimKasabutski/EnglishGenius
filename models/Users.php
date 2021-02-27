@@ -63,4 +63,21 @@ class Users
         $mysqli->close();
         return $result;
     }
+
+    public static function sendEmail($email)
+    {
+        $link = 'sis';
+        $fromMail = 'admin@englishgenius.loc';
+        $fromName = 'EnglishGenius';
+        $emailTo = $email;
+        $subject = 'Password recovery ';
+        $subject = '=?utf-8?b?'. base64_encode($subject) .'?=';
+        $headers = "Content-type: text/plain; charset=\"utf-8\"\r\n";
+        $headers .= "From: ". $fromName ." <". $fromMail ."> \r\n";
+        $body = "To recover your password follow the link below\n
+               $link\n";
+        $mail = mail($emailTo, $subject, $body, $headers, '-f'. $fromMail );
+        if ($mail) return true;
+        else return false;
+    }
 }

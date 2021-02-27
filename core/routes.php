@@ -16,6 +16,8 @@ return array(
     'dictionary/([0-9]+)' => 'dictionary/data/$1',
     'api/registration' => 'authregAPI/registration',
     'api/login' => 'authregAPI/login',
+    'api/reset' => 'authregAPI/reset',
+    'reset' => 'authreg/reset',
     'login' => 'authreg/login',
     'logout' => 'authreg/logout',
     'registration' => 'authreg/registration',

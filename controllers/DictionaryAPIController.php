@@ -15,14 +15,13 @@ class DictionaryAPIController
     protected $isPublic;
     protected $userid;
 
-
     public function __construct()
     {
         $this->request = json_decode(file_get_contents('php://input'), true);
         $this->dictionaryId = isset($this->request['dictionaryId']) ? $this->request['dictionaryId'] : NULL;
         $this->dictionaryName = Service::strCleaner(isset($this->request['dictionaryName']) ? $this->request['dictionaryName'] : NULL);
         $this->dictionaryDiscription = Service::strCleaner(isset($this->request['dictionaryDiscription']) ? $this->request['dictionaryDiscription'] : NULL);
-        $this->isPublic = isset($this->request['isPublic']) ? ($this->request['isPublic'] ? 1 : 0 ) : NULL;
+        $this->isPublic = isset($this->request['isPublic']) ? ($this->request['isPublic'] ? 1 : 0) : NULL;
         $this->username = $_SESSION['username'];
         $this->userid = $_SESSION['userid'];
     }

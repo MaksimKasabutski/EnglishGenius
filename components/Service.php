@@ -17,7 +17,7 @@ class Service
 
     public static function strCleaner($string): string
     {
-        return htmlspecialchars(strip_tags(trim($string, " \n\r\t\v\0")));
+        return mysqli_real_escape_string(self::connectToDB(), htmlspecialchars(strip_tags(trim($string, " \n\r\t\v\0"))));
     }
 
     public static function isRus($string)

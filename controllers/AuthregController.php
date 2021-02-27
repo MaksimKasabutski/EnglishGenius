@@ -36,4 +36,13 @@ class AuthregController extends Controller
             header('Location: profile');
         }
     }
+
+    public function actionReset()
+    {
+        if (!Users::isAlreadyLogin()) {
+            $this->view->generate('reset.php', 'authregTemplate.php');
+        } else {
+            header('Location: profile');
+        }
+    }
 }
