@@ -10,6 +10,7 @@ class AuthregAPIController extends APIController
     private $password;
     private $passwordConf;
     private $email;
+    private $resetLink;
 
     public function __construct()
     {
@@ -18,6 +19,7 @@ class AuthregAPIController extends APIController
         $this->password = Service::strCleaner(isset($this->request['password']) ? $this->request['password'] : NULL);
         $this->passwordConf = Service::strCleaner(isset($this->request['passwordConf']) ? $this->request['passwordConf'] : NULL);
         $this->email = Service::strCleaner(isset($this->request['email']) ? $this->request['email'] : NULL);
+        $this->resetLink = isset($this->request['resetLink']) ? $this->request['resetLink'] : NULL;
     }
 
     public function actionLogin()
@@ -57,8 +59,8 @@ class AuthregAPIController extends APIController
                 setcookie("hash", '', strtotime('+30 days')); //1 month
                 $_SESSION['userid'] = Users::getUserId($this->username);
                 $_SESSION['username'] = $this->username;
-                $response = new Response('success', 'Регистрация прошла успешно.');
-            } else $response = new Response('error', 'Something went wrong.');
+                $response = new Response('success', 'Регистрация прошла успешно');
+            } else $response = new Response('error', 'Something went wrong');
         }
 
         echo json_encode($response);
@@ -80,6 +82,34 @@ class AuthregAPIController extends APIController
                 $response = new Response('error', 'Dont sent');
                 echo json_encode($response);
             }
+        }
+    }
+
+    public function actionNewpass()
+    {
+        if (!Validation::emailValidation($this->email)) {
+            $response = new Response('error', 'Wrong email address format');
+            echo json_encode($response);
+        } elseif (!Users::isEmailUsed($this->email)) {
+            $response = new Response('error', 'User with this email address doesn\'t exist');
+            echo json_encode($response);
+        } elseif ($this->password != $this->passwordConf) {
+            $response = new Response('error', 'Password mismatch');
+            echo json_encode($response);
+        } elseif (!Service::checkLength(8, 60, $this->password)) {
+            $response = new Response('error', 'Wrong password length');
+            echo json_encode($response);
+        } elseif (Users::compareLinks($this->email, $this->resetLink)) {
+            if(Users::setNewPassword($this->email, $this->password)) {
+                $response = new Response('success', 'All is fine');
+                echo json_encode($response);
+            } else {
+                $response = new Response('error', 'Something went wrong');
+                echo json_encode($response);
+            }
+        } else {
+            $response = new Response('error', "Something went wrong");
+            echo json_encode($response);
         }
     }
 }

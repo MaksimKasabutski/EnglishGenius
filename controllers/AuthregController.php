@@ -45,4 +45,13 @@ class AuthregController extends Controller
             header('Location: profile');
         }
     }
+
+    public function actionNewpass($parameters)
+    {
+        if (!Users::isAlreadyLogin()) {
+            $this->view->generate('newpass.php', 'authregTemplate.php', $parameters);
+        } else {
+            header('Location: profile');
+        }
+    }
 }

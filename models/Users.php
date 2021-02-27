@@ -1,4 +1,8 @@
 <?php
+require 'phpmailer/PHPMailer.php';
+require 'phpmailer/SMTP.php';
+require 'phpmailer/Exception.php';
+
 require_once(ROOT . '/components/Service.php');
 require_once(ROOT . '/components/Security.php');
 
@@ -64,20 +68,49 @@ class Users
         return $result;
     }
 
+    public static function generateResetLink($email)
+    {
+        $resetlink = hash("md2", str_replace('.', '', $_SERVER['REMOTE_ADDR']));
+        $mysqli = Service::connectToDB();
+        $query = "UPDATE users SET resetlink = '$resetlink' WHERE email = '$email'";
+        $mysqli->query($query);
+        return $resetlink;
+    }
+
     public static function sendEmail($email)
     {
-        $link = 'sis';
-        $fromMail = 'admin@englishgenius.loc';
-        $fromName = 'EnglishGenius';
-        $emailTo = $email;
-        $subject = 'Password recovery ';
-        $subject = '=?utf-8?b?'. base64_encode($subject) .'?=';
-        $headers = "Content-type: text/plain; charset=\"utf-8\"\r\n";
-        $headers .= "From: ". $fromName ." <". $fromMail ."> \r\n";
-        $body = "To recover your password follow the link below\n
-               $link\n";
-        $mail = mail($emailTo, $subject, $body, $headers, '-f'. $fromMail );
+        $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+        $mail->CharSet = 'UTF-8';
+        $mail->SMTPDebug = PHPMailer\PHPMailer\SMTP::DEBUG_SERVER;
+        $mail->isSMTP();
+        $mail->SMTPAuth = true;
+        $mail->SMTPDebug = 0;
+        $mail->SMTPSecure = 'tls';
+        $mail->Host = 'smtp.gmail.com';
+        $mail->Port = 587;
+        $mail->Username = 'maksim.kasabutski@gmail.com';
+        $mail->Password = 'maksim9890292';
+        $mail->setFrom('admin@englishgenius.com', 'EnglishGenius');
+        $mail->addAddress($email);
+        $mail->isHTML(true);
+        $mail->Subject = 'Password recovery';
+        $link = 'http://englishgenius.loc/reset/' . self::generateResetLink($email);
+        $mail->Body = "To recover your password follow the link below: <br><br> $link";
+        $mail->send();
         if ($mail) return true;
         else return false;
+    }
+
+    public static function compareLinks($email, $resetLink)
+    {
+        $usersResetLink = Service::connectToDB()->query("SELECT resetlink FROM users WHERE email = '$email'")->fetch_all(MYSQLI_ASSOC)[0]['resetlink'];
+        if ($resetLink != $usersResetLink) return false;
+        else return true;
+    }
+
+    public static function setNewPassword($email, $password)
+    {
+        $password = Security::encodePassword($password);
+        return mysqli_query(Service::connectToDB(),"UPDATE users SET password = '$password' WHERE email = '$email'");
     }
 }

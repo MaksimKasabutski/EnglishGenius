@@ -11,8 +11,8 @@
     <form class="form-signin" id='resetForm' method='POST'>
         <h1 class="h3 mb-3 font-weight-normal">Password recovery</h1>
 
-        <label for='email' class="sr-only">E-mail</label>
-        <input id="email" class="form-control" type='email' placeholder='E-mail'>
+        <label for='email' class="sr-only">Email</label>
+        <input id="email" class="form-control" type='email' placeholder='Email'>
         <br>
         <input type='submit' class="btn btn-md btn-primary btn-block" value='Send'>
         <div class="mt-4">

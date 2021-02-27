@@ -17,7 +17,7 @@ resetForm.onsubmit = function(event) {
         if(xhr.readyState === 4 && xhr.status === 200) {
             let json = JSON.parse(xhr.responseText);
             if (json.result === 'success') {
-                loginForm.style.display = 'none';
+                resetForm.style.display = 'none';
                 servResponse.classList.remove('alert-danger');
                 servResponse.classList.add('alert-success');
                 servResponse.style.display = 'block';

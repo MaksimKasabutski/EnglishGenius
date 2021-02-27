@@ -18,7 +18,7 @@
         <input id="password" class="form-control middle-input" type="password" placeholder="Password" required>
 
         <label for="confirm_password" class="sr-only">Repeat password</label>
-        <input id="confirm_password" class="form-control middle-input" type="password" placeholder="Repeat password" required>
+        <input id="passwordConfirm" class="form-control middle-input" type="password" placeholder="Repeat password" required>
 
         <label for="email" class="sr-only">E-mail:</label>
         <input id="email" class="form-control last-input" type="email" placeholder="E-mail" required>
