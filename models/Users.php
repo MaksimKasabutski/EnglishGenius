@@ -88,7 +88,7 @@ class Users
         $mail->SMTPSecure = 'tls';
         $mail->Host = 'smtp.gmail.com';
         $mail->Port = 587;
-        $mail->Username = '#';
+        $mail->Username = 'maksim.kasabutski@gmil.com';
         $mail->Password = '#';
         $mail->setFrom('admin@englishgenius.com', 'EnglishGenius');
         $mail->addAddress($email);

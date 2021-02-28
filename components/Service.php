@@ -3,7 +3,7 @@
 
 class Service
 {
-    public static function connectToDB(): object
+    public static function connectToDB(): mysqli
     {
         return new mysqli('localhost', 'root', '1234', 'EnglishGenius');
     }
