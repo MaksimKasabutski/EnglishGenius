@@ -86,7 +86,7 @@ class Users
         $mail->Host = 'smtp.gmail.com';
         $mail->Port = 587;
         $mail->Username = 'maksim.kasabutski@gmail.com';
-        $mail->Password = 'maksim9890292';
+        $mail->Password = '#';
         $mail->setFrom('admin@englishgenius.com', 'EnglishGenius');
         $mail->addAddress($email);
         $mail->isHTML(true);
