@@ -1,15 +1,11 @@
 <?php
-session_start();
+require 'config.php';
+use Core\Router;
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+require 'core/bootstrap.php';
 
-define('URL', 'http://englishgenius.loc/');
-define('ROOT', dirname(__FILE__));
-require_once(ROOT . '/core/bootstrap.php');
-
-if ($_SERVER['REQUEST_URI'] == '/') {
-    header('Location: profile');
-}
+//if ($_SERVER['REQUEST_URI'] == '/') {
+//    header('Location: profile');
+//}
 $router = new Router();
 $router->run();

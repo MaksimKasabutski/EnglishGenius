@@ -1,4 +1,6 @@
-<?php require_once ROOT . '/core/Controller.php' ?>
+<?php
+use Models\Dictionary;
+?>
 <br>
 <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
      aria-label="breadcrumb">
@@ -7,10 +9,15 @@
         <li class="breadcrumb-item active" aria-current="page"><?php echo $title ?></li>
     </ol>
 </nav>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-        data-bs-toggle="tooltip" data-bs-target="#addword"
+<?php
+//date from Dictionary->getWords => DictionaryController->actionData
+$dictionaryId = array_pop($data);
+if(\Models\Dictionary::isDictionaryOwner($dictionaryId)) {
+    echo '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addword"
         data-bs-placement="bottom">ADD WORD
-</button>
+</button>';
+}
+?>
 <div class='col-8'>
     <table class='table table-inverse'>
         <tr>
@@ -20,8 +27,7 @@
         </tr>
 
         <?php
-        //date from Dictionary->getWords => DictionaryController->actionData
-        $dictionaryId = array_pop($data);
+
         if (!empty($data)) {
             foreach ($data as $wordpare) {
                 $result = "<tr id='" . $wordpare['wordid'] . "'><td>" . $wordpare['word'] . " <div class='pos'>" . $wordpare['pos'] . "</div></td><td>" . $wordpare['translation'] . "</td>";
@@ -66,6 +72,7 @@
                         <option value="verb">verb</option>
                         <option value="adverb">adverb</option>
                         <option value="adjective">adjective</option>
+                        <option value="preposition">preposition</option>
                     </select>
                     <input type="hidden" id="dictionaryid" value="<?php echo $dictionaryId ?>">
                 </div>

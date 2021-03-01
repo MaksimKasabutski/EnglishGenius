@@ -1,5 +1,7 @@
 <?php
-require_once ROOT . '/controllers/DictionaryAPIController.php';
+namespace Controllers;
+use Models\{Words, Dictionary};
+use Components\{Service, Response};
 
 class WordAPIController extends DictionaryAPIController
 {

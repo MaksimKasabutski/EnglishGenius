@@ -7,7 +7,8 @@
     </ol>
 </nav>
 <br>
-<?php if(!$data) {
+<?php
+if(!$data) {
     echo 'You already have all of dictionaries.';
 } else {?>
 <table class="table">

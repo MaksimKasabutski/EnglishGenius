@@ -1,18 +1,18 @@
 <?php
-require_once ROOT . '/core/View.php';
+namespace Core;
+use Core\View;
+use Models\Users;
 
 class Controller
 {
-    public $model;
-    public $view;
+    protected $model;
+    protected $view;
 
     public function __construct()
     {
+        if(!Users::isAlreadyLogin()) {
+            header('Location: login');
+        }
         $this->view = new View();
-    }
-
-    function actionIndex()
-    {
-
     }
 }

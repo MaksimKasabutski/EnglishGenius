@@ -37,6 +37,7 @@ if ($data != NULL) {
         <option value="verb">verb</option>
         <option value="adverb">adverb</option>
         <option value="adjective">adjective</option>
+        <option value="preposition">preposition</option>
     </select>
     <input type="hidden" id="wordid" value="<?php echo $wordid ?>">
     <input type="hidden" id="dictionaryid" value="<?php echo $dictionaryid ?>">

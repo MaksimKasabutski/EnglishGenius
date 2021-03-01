@@ -1,5 +1,7 @@
 <?php
-
+namespace Models;
+use Core\Model;
+use Components\Service;
 
 class Profile extends Model
 {

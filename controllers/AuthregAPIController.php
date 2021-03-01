@@ -1,9 +1,8 @@
 <?php
-require_once ROOT . '/models/Users.php';
-require_once ROOT . '/components/Security.php';
-require_once ROOT . '/components/Response.php';
-require_once ROOT . '/components/Validation.php';
-
+namespace Controllers;
+use Core\APIController;
+use Components\{Service, Response, Security, Validation};
+use Models\Users;
 class AuthregAPIController extends APIController
 {
     private $username;

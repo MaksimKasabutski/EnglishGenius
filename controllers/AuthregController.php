@@ -1,20 +1,24 @@
 <?php
-require_once ROOT . '/core/Controller.php';
-require_once ROOT . '/components/Response.php';
-require_once ROOT . '/models/Profile.php';
-require_once ROOT . '/models/Users.php';
 
+namespace Controllers;
+
+use Core\Controller;
+use Core\View;
+use Models\Users;
 
 class AuthregController extends Controller
 {
+    public function __construct()
+    {
+        if (Users::isAlreadyLogin()) {
+            header('Location: profile');
+        }
+        $this->view = new View();
+    }
 
     public function actionLogin()
     {
-        if (!Users::isAlreadyLogin()) {
-            $this->view->generate('login.php', 'authregTemplate.php');
-        } else {
-            header('Location: profile');
-        }
+        $this->view->generate('login.php', 'authregTemplate.php');
     }
 
     public function actionLogout()
@@ -30,28 +34,16 @@ class AuthregController extends Controller
 
     public function actionRegistration()
     {
-        if (!Users::isAlreadyLogin()) {
-            $this->view->generate('registration.php', 'authregTemplate.php');
-        } else {
-            header('Location: profile');
-        }
+        $this->view->generate('registration.php', 'authregTemplate.php');
     }
 
     public function actionReset()
     {
-        if (!Users::isAlreadyLogin()) {
-            $this->view->generate('reset.php', 'authregTemplate.php');
-        } else {
-            header('Location: profile');
-        }
+        $this->view->generate('reset.php', 'authregTemplate.php');
     }
 
     public function actionNewpass($parameters)
     {
-        if (!Users::isAlreadyLogin()) {
-            $this->view->generate('newpass.php', 'authregTemplate.php', $parameters);
-        } else {
-            header('Location: profile');
-        }
+        $this->view->generate('newpass.php', 'authregTemplate.php', $parameters);
     }
 }

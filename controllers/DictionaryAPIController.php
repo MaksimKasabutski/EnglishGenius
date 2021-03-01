@@ -1,9 +1,7 @@
 <?php
-require_once ROOT . '/models/Users.php';
-require_once ROOT . '/models/Words.php';
-require_once ROOT . '/models/Dictionary.php';
-require_once ROOT . '/components/Security.php';
-require_once ROOT . '/components/Response.php';
+namespace Controllers;
+use Components\{Service, Response, Validation};
+use Models\Dictionary;
 
 class DictionaryAPIController
 {
@@ -28,11 +26,11 @@ class DictionaryAPIController
 
     public function actionCreate()
     {
-        if (Dictionary::isWordlistNameUsed($this->dictionaryName)) {
+        if (Dictionary::isDictionaryNameUsed($this->dictionaryName)) {
             $response = new Response('error', 'This name is already taken.');
             echo json_encode($response);
             return;
-        } elseif (!Dictionary::checkWordlistName($this->dictionaryName)) {
+        } elseif (!Validation::checkDictionaryName($this->dictionaryName)) {
             $response = new Response('error', 'Wrong name.');
             echo json_encode($response);
             return;
@@ -51,7 +49,7 @@ class DictionaryAPIController
             $response = new Response('error', 'This name is already taken.');
             echo json_encode($response);
             return;
-        } elseif (!Dictionary::checkWordlistName($this->dictionaryName)) {
+        } elseif (!Validation::checkDictionaryName($this->dictionaryName)) {
             $response = new Response('error', 'Wrong name.');
             echo json_encode($response);
             return;

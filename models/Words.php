@@ -1,5 +1,6 @@
 <?php
-require_once(ROOT . '/components/Service.php');
+namespace Models;
+use Components\{Service, Response};
 
 class Words
 {
@@ -23,6 +24,7 @@ class Words
             case 'verb': return 'verb';
             case 'adverb': return 'adverb';
             case 'adjective': return 'adjective';
+            case 'preposition': return 'preposition';
             default: return NULL;
         }
     }
@@ -42,7 +44,7 @@ class Words
         return NULL;
     }
 
-    public static function updateWord($engWord, $rusWord, $wordid, $pos)
+    public static function updateWord($engWord, $rusWord, $wordid, $pos): bool
     {
         $mysqli = Service::connectToDB();
         $query = "UPDATE wordlist SET word = '$engWord', translation = '$rusWord', pos = '$pos' WHERE wordid = '$wordid'";

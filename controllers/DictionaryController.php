@@ -1,92 +1,54 @@
 <?php
-require_once ROOT . '/core/Controller.php';
-require_once ROOT . '/models/Users.php';
-require_once ROOT . '/models/Dictionary.php';
+
+namespace Controllers;
+
+use Core\Controller;
+use Models\{Users, Dictionary};
 
 class DictionaryController extends Controller
 {
 
     public function actionData($parameters)
     {
-        if (Users::isAlreadyLogin()) {
-            $dictionaryid = $parameters[0];
-            $this->model = new Dictionary();
-            $title = $this->model->setTitle($dictionaryid);
-            $data = $this->model->getWords($dictionaryid);
-            $this->view->generate('dictionary.php', 'template.php', $data, $title);
-        } else {
-            header('Location: login');
-        }
+        $dictionaryid = $parameters[0];
+        $this->model = new Dictionary();
+        $title = $this->model->setTitle($dictionaryid);
+        $data = $this->model->getWords($dictionaryid);
+        $this->view->generate('dictionary.php', 'template.php', $data, $title);
     }
 
-    public function actionDeleteWord($parameters) /*ДОДЕЛАТЬ*/
+    public function actionRemoveDictionary($parameters)
     {
-        if (Users::isAlreadyLogin()) {
-            $this->model = new Dictionary();
-            if (WordAPIController::deleteWord($parameters)) {
-                header('Location: ' . $_SERVER['HTTP_REFERER']);
-            } else echo 'error';
-        } else {
-            header('Location: login');
-        }
-    }
-
-    public function actionRemoveDictionary($parameters): bool
-    {
-        if (Users::isAlreadyLogin()) {
-            $this->model = new Dictionary();
-            if ($this->model->removeDictionary($parameters)) {
-                header('Location: ' . $_SERVER['HTTP_REFERER']);
-            }
-        } else {
-            header('Location: login');
-        }
+        Dictionary::removeDictionary($parameters);
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
     }
 
     public function actionDeleteDictionary($parameters)
     {
-        if (Users::isAlreadyLogin()) {
-            $this->model = new Dictionary();
-            if ($this->model->deleteDictionary($parameters)) {
-                header('Location: ' . $_SERVER['HTTP_REFERER']);
-            }
-        } else {
-            header('Location: login');
-        }
+        Dictionary::deleteDictionary($parameters);
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
     }
 
     public function actionCreate()
     {
-        if (Users::isAlreadyLogin()) {
-            $title = 'Create dictionary - EnglishGenius';
-            $this->view->generate('dictionaryCreateUpdate.php', 'template.php', NULL, $title);
-        } else {
-            header('Location: login');
-        }
+        $title = 'Create dictionary - EnglishGenius';
+        $this->view->generate('dictionaryCreateUpdate.php', 'template.php', NULL, $title);
     }
 
     public function actionUpdate($parameters)
     {
-        if (Users::isAlreadyLogin()) {
-            $this->model = new Dictionary();
-            $title = 'Update dictionary - EnglishGenius';
-            $dictionaryid = $parameters[0];
-            $data = $this->model->getFieldsContent($dictionaryid);
-            $this->view->generate('dictionaryCreateUpdate.php', 'template.php', $data, $title);
-        } else {
-            header('Location: login');
-        }
+        $this->model = new Dictionary();
+        $title = 'Update dictionary - EnglishGenius';
+        $dictionaryid = $parameters[0];
+        $data = $this->model->getFieldsContent($dictionaryid);
+        $this->view->generate('dictionaryCreateUpdate.php', 'template.php', $data, $title);
     }
 
     public function actionAdd()
     {
-        if (Users::isAlreadyLogin()) {
-            $this->model = new Dictionary();
-            $title = 'Add dictionary - EnglishGenius';
-            $data = $this->model->getAllDictionaries();
-            $this->view->generate('dictionaryAdd.php', 'template.php', $data, $title);
-        } else {
-            header('Location: login');
-        }
+        $this->model = new Dictionary();
+        $title = 'Add dictionary - EnglishGenius';
+        $data = $this->model->getAllDictionaries();
+        $this->view->generate('dictionaryAdd.php', 'template.php', $data, $title);
     }
 }

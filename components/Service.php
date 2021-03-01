@@ -1,11 +1,12 @@
 <?php
-
+namespace Components;
+use Mysqli;
 
 class Service
 {
     public static function connectToDB(): mysqli
     {
-        return new mysqli('localhost', 'root', '1234', 'EnglishGenius');
+        return new mysqli(HOST, USER, PASSWORD, DBNAME);
     }
 
     public static function checkLength($minlength, $maxlength, $string): bool
@@ -27,7 +28,7 @@ class Service
 
     public static function isEng($string)
     {
-        return preg_match("/[^(A-Za-z\')]/u", $string);
+        return preg_match("/[^(A-Za-z\'\s)]/u", $string);
     }
 
 }

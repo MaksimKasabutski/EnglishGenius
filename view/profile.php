@@ -1,3 +1,6 @@
+<?php
+use Models\Dictionary;
+?>
 <br>
 <div>
     <a href='/dictionary/create' class='btn btn-outline-primary'>Create dictionary</a>
@@ -36,14 +39,12 @@
                             </a>
                             <button onclick="generateModalForDelete(<?php echo $id . ', \'' . $name . '\', \'' . $deleteLink . '\'' ?>)"
                                     type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                    data-bs-toggle="tooltip"
                                     data-bs-placement="bottom" title="Delete wordlist">
                                 <i class="fa fa-trash-o fa-lg" aria-hidden="true"></i>
                             </button>
                         <?php } else { ?>
                         <button onclick="generateModalForRemove(<?php echo $id . ', \'' . $name . '\', \'' . $removeLink . '\'' ?>)"
                                 type="button" class="btn btn-info" data-bs-toggle="modal"
-                                data-bs-toggle="tooltip"
                                 data-bs-placement="bottom" title="Remove wordlist">
                             <i class="fa fa-trash-o fa-lg" aria-hidden="true"></i>
                         </button>

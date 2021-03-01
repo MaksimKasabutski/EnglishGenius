@@ -1,4 +1,6 @@
 <?php
+namespace Components;
+use JsonSerializable;
 class Response implements JsonSerializable
     {
         protected $result;

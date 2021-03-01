@@ -1,0 +1,16 @@
+{
+  "autoload": {
+    "psr-4": {
+      "Core\\":"core",
+      "Models\\": "models",
+      "Controllers\\": "controllers",
+      "Components\\": "components",
+      "PHPMailer\\": "PHPMailer"
+    }
+  },
+  "require": {
+    "ext-json": "*",
+    "ext-mbstring": "*",
+    "ext-mysqli": "*"
+  }
+}

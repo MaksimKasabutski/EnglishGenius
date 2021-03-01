@@ -1,10 +1,7 @@
 <?php
-require 'phpmailer/PHPMailer.php';
-require 'phpmailer/SMTP.php';
-require 'phpmailer/Exception.php';
-
-require_once(ROOT . '/components/Service.php');
-require_once(ROOT . '/components/Security.php');
+namespace Models;
+use Components\{Service, Security};
+use PHPMailer\{PHPMailer, SMTP};
 
 class Users
 {
@@ -63,7 +60,7 @@ class Users
     public static function addUser($username, $email, $password): bool
     {
         $mysqli = Service::connectToDB();
-        $result = mysqli_query($mysqli, "INSERT INTO users VALUES(NULL, '$username', '$email', '$password')");
+        $result = mysqli_query($mysqli, "INSERT INTO users VALUES(NULL, '$username', '$email', '$password', NULL)");
         $mysqli->close();
         return $result;
     }
@@ -79,17 +76,17 @@ class Users
 
     public static function sendEmail($email)
     {
-        $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+        $mail = new PHPMailer(true);
         $mail->CharSet = 'UTF-8';
-        $mail->SMTPDebug = PHPMailer\PHPMailer\SMTP::DEBUG_SERVER;
+        $mail->SMTPDebug = SMTP::DEBUG_SERVER;
         $mail->isSMTP();
         $mail->SMTPAuth = true;
         $mail->SMTPDebug = 0;
         $mail->SMTPSecure = 'tls';
         $mail->Host = 'smtp.gmail.com';
         $mail->Port = 587;
-        $mail->Username = 'maksim.kasabutski@gmil.com';
-        $mail->Password = '#';
+        $mail->Username = 'maksim.kasabutski@gmail.com';
+        $mail->Password = 'maksim9890292';
         $mail->setFrom('admin@englishgenius.com', 'EnglishGenius');
         $mail->addAddress($email);
         $mail->isHTML(true);
@@ -101,14 +98,14 @@ class Users
         else return false;
     }
 
-    public static function compareLinks($email, $resetLink)
+    public static function compareLinks($email, $resetLink): bool
     {
         $usersResetLink = Service::connectToDB()->query("SELECT resetlink FROM users WHERE email = '$email'")->fetch_all(MYSQLI_ASSOC)[0]['resetlink'];
         if ($resetLink != $usersResetLink) return false;
         else return true;
     }
 
-    public static function setNewPassword($email, $password)
+    public static function setNewPassword($email, $password): bool
     {
         $password = Security::encodePassword($password);
         return mysqli_query(Service::connectToDB(),"UPDATE users SET password = '$password' WHERE email = '$email'");
