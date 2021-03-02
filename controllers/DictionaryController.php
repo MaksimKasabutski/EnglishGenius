@@ -3,29 +3,33 @@
 namespace Controllers;
 
 use Core\Controller;
-use Models\{Users, Dictionary};
+use Models\{Dictionary, Words};
 
 class DictionaryController extends Controller
 {
 
-    public function actionData($parameters)
+    public function __construct($parameters)
     {
-        $dictionaryid = $parameters[0];
-        $this->model = new Dictionary();
-        $title = $this->model->setTitle($dictionaryid);
-        $data = $this->model->getWords($dictionaryid);
+        parent::__construct();
+        $_SESSION['dictionaryId'] = intval($parameters[0]);
+    }
+
+    public function actionData()
+    {
+        $title = Dictionary::setTitle();
+        $data = Words::renderData();
         $this->view->generate('dictionary.php', 'template.php', $data, $title);
     }
 
-    public function actionRemoveDictionary($parameters)
+    public function actionRemoveDictionary()
     {
-        Dictionary::removeDictionary($parameters);
+        Dictionary::removeDictionary();
         header('Location: ' . $_SERVER['HTTP_REFERER']);
     }
 
-    public function actionDeleteDictionary($parameters)
+    public function actionDeleteDictionary()
     {
-        Dictionary::deleteDictionary($parameters);
+        Dictionary::deleteDictionary();
         header('Location: ' . $_SERVER['HTTP_REFERER']);
     }
 
@@ -48,7 +52,7 @@ class DictionaryController extends Controller
     {
         $this->model = new Dictionary();
         $title = 'Add dictionary - EnglishGenius';
-        $data = $this->model->getAllDictionaries();
+        $data = $this->model->getUserDictionaries();
         $this->view->generate('dictionaryAdd.php', 'template.php', $data, $title);
     }
 }

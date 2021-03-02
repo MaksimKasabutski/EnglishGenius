@@ -1,7 +1,7 @@
 <?php
 namespace Controllers;
 use Core\APIController;
-use Components\{Service, Response, Security, Validation};
+use Components\{DB, Response, Security, Validation};
 use Models\Users;
 class AuthregAPIController extends APIController
 {
@@ -14,10 +14,10 @@ class AuthregAPIController extends APIController
     public function __construct()
     {
         parent::__construct();
-        $this->username = Service::strCleaner(isset($this->request['username']) ? $this->request['username'] : NULL);
-        $this->password = Service::strCleaner(isset($this->request['password']) ? $this->request['password'] : NULL);
-        $this->passwordConf = Service::strCleaner(isset($this->request['passwordConf']) ? $this->request['passwordConf'] : NULL);
-        $this->email = Service::strCleaner(isset($this->request['email']) ? $this->request['email'] : NULL);
+        $this->username = Validation::strCleaner(isset($this->request['username']) ? $this->request['username'] : NULL);
+        $this->password = Validation::strCleaner(isset($this->request['password']) ? $this->request['password'] : NULL);
+        $this->passwordConf = Validation::strCleaner(isset($this->request['passwordConf']) ? $this->request['passwordConf'] : NULL);
+        $this->email = Validation::strCleaner(isset($this->request['email']) ? $this->request['email'] : NULL);
         $this->resetLink = isset($this->request['resetLink']) ? $this->request['resetLink'] : NULL;
     }
 
@@ -44,8 +44,8 @@ class AuthregAPIController extends APIController
             $response = new Response('error', 'User with the same name already exists');
         } elseif (!Users::checkUserName($this->username)) {
             $response = new Response('error', 'Wrong username format');
-        } elseif (!Service::checkLength(8, 60, $this->password)) {
-            $response = new Response('error', 'Wrong password length');
+        } elseif (!Validation::checkLength(8, 60, $this->password)) {
+            $response = new Response('error', 'Password length must be from 8 to 60');
         } elseif (Users::isEmailUsed($this->email)) {
             $response = new Response('error', 'User with this email address already exists');
         } elseif ($this->password != $this->passwordConf) {
@@ -95,7 +95,7 @@ class AuthregAPIController extends APIController
         } elseif ($this->password != $this->passwordConf) {
             $response = new Response('error', 'Password mismatch');
             echo json_encode($response);
-        } elseif (!Service::checkLength(8, 60, $this->password)) {
+        } elseif (!Validation::checkLength(8, 60, $this->password)) {
             $response = new Response('error', 'Wrong password length');
             echo json_encode($response);
         } elseif (Users::compareLinks($this->email, $this->resetLink)) {

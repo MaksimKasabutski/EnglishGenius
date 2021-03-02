@@ -36,7 +36,7 @@ class Router
 
                 $parameters = $segments;
 
-                $controllerObject = new $controllerName();
+                $controllerObject = new $controllerName($parameters);
                 $controllerObject->$actionName($parameters);
 
                 if ($controllerObject != null) {

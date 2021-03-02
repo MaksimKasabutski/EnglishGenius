@@ -1,7 +1,7 @@
 <?php
 namespace Controllers;
 use Models\{Words, Dictionary};
-use Components\{Service, Response};
+use Components\{DB, Response, Validation};
 
 class WordAPIController extends DictionaryAPIController
 {
@@ -14,15 +14,15 @@ class WordAPIController extends DictionaryAPIController
     {
         parent::__construct();
         $this->pos = isset($this->request['pos']) ? Words::getPos($this->request['pos']) : NULL;
-        $this->engWord = Service::strCleaner(mb_strtolower(isset($this->request['englishWord']) ? $this->request['englishWord'] : NULL));
-        $this->rusWord = Service::strCleaner(mb_strtolower(isset($this->request['translation']) ? $this->request['translation'] : NULL));
+        $this->engWord = Validation::strCleaner(mb_strtolower(isset($this->request['englishWord']) ? $this->request['englishWord'] : NULL));
+        $this->rusWord = Validation::strCleaner(mb_strtolower(isset($this->request['translation']) ? $this->request['translation'] : NULL));
         $this->wordid = isset($this->request['wordid']) ? $this->request['wordid'] : NULL;
     }
 
     public function actionDelete($parameters)
     {
         if (Dictionary::isDictionaryOwner($this->dictionaryId) and $this->wordid) {
-            if (mysqli_query(Service::connectToDB(), "DELETE FROM wordlist WHERE wordid = '$this->wordid'")) {
+            if (mysqli_query(DB::connectToDB(), "DELETE FROM wordlist WHERE wordid = '$this->wordid'")) {
                 $response = new Response('success', '');
                 echo json_encode($response);
                 return;
@@ -32,7 +32,7 @@ class WordAPIController extends DictionaryAPIController
 
     public function actionAdd()
     {
-        $response = Words::wordValidation($this->engWord, $this->rusWord);
+        $response = Validation::wordValidation($this->engWord, $this->rusWord);
         if ($response) {
             echo json_encode($response);
             return;
@@ -47,7 +47,7 @@ class WordAPIController extends DictionaryAPIController
 
     public function actionUpdate()
     {
-        $response = Words::wordValidation($this->engWord, $this->rusWord);
+        $response = Validation::wordValidation($this->engWord, $this->rusWord);
         if ($response) {
             echo json_encode($response);
             return;

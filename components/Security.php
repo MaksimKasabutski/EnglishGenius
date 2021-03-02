@@ -10,7 +10,7 @@ class Security
 
     public static function checkPassword($username, $password): bool
     {
-        $mysqli = Service::connectToDB();
+        $mysqli = DB::connectToDB();
         $query = "SELECT password FROM users WHERE username = '$username'";
         $result = $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
         $mysqli->close();

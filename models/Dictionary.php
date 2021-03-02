@@ -2,30 +2,22 @@
 
 namespace Models;
 
-use Components\Service;
+use Components\DB;
 
 class Dictionary
 {
 
-    public static function getDictionaryName($id)
+    public static function getDictionaryName($id): string
     {
-        $mysqli = Service::connectToDB();
+        $mysqli = DB::connectToDB();
         $result = $mysqli->query("SELECT name FROM dictionaries WHERE dictionaryid = '$id'")->fetch_all(MYSQLI_ASSOC);
         $mysqli->close();
         return $result[0]['name'];
     }
 
-    public static function getDictionaryId($name)
-    {
-        $mysqli = Service::connectToDB();
-        $result = $mysqli->query("SELECT dictionaryid FROM dictionaries WHERE name = '$name'")->fetch_all(MYSQLI_ASSOC);
-        $mysqli->close();
-        return $result[0]['dictionaryid'];
-    }
-
     public static function createDictionary($wordlistName, $wordlistDiscription, $userid, $isPublic)
     {
-        $mysqli = Service::connectToDB();
+        $mysqli = DB::connectToDB();
         $result = mysqli_query($mysqli, "INSERT INTO dictionaries(dictionaryid, name, discription, dictionaryowner, ispublic) VALUES(NULL, '$wordlistName', '$wordlistDiscription', '$userid', '$isPublic')");
         $lastId = $mysqli->insert_id;
         mysqli_query($mysqli, "INSERT INTO users_has_dictionaries(users_userid, dictionaries_dictionaryid) VALUES('$userid', '$lastId')");
@@ -35,16 +27,16 @@ class Dictionary
 
     public static function updateDictionary($dictionaryId, $dictionaryName, $dictionaryDiscription, $isPublic)
     {
-        $mysqli = Service::connectToDB();
+        $mysqli = DB::connectToDB();
         return mysqli_query($mysqli, "UPDATE dictionaries SET name = '$dictionaryName', discription = '$dictionaryDiscription', ispublic = '$isPublic' WHERE dictionaryid = '$dictionaryId'");
     }
 
-    public static function removeDictionary($parameters): bool
+    public static function removeDictionary(): bool
     {
-        $userid = Users::getUserId($_SESSION['username']);
-        $dictionaryid = $parameters[0];
-        if (self::isUserHasADictionary($userid, $dictionaryid)) {
-            $mysqli = Service::connectToDB();
+        $userid = $_SESSION['userid'];
+        $dictionaryid = $_SESSION['dictionaryId'];
+        if (self::isUserHasADictionary()) {
+            $mysqli = DB::connectToDB();
             $query = "DELETE FROM users_has_dictionaries WHERE users_userid = '$userid' AND dictionaries_dictionaryid = '$dictionaryid'";
             $mysqli->query($query);
             return true;
@@ -52,11 +44,11 @@ class Dictionary
         return false;
     }
 
-    public static function deleteDictionary($parameters): bool
+    public static function deleteDictionary(): bool
     {
-        $dictionaryid = $parameters[0];
+        $dictionaryid = $_SESSION['dictionaryId'];
         if (self::isDictionaryOwner($dictionaryid)) {
-            $mysqli = Service::connectToDB();
+            $mysqli = DB::connectToDB();
             $query = "DELETE FROM dictionaries WHERE dictionaryid = '$dictionaryid'";
             $mysqli->query($query);
             return true;
@@ -64,43 +56,28 @@ class Dictionary
         return false;
     }
 
-    public function getWords($dictionaryId)
-    {
-        if (self::isUserHasADictionary($_SESSION['userid'], $dictionaryId)) {
-            $mysqli = Service::connectToDB();
-            $query = "SELECT wordid, word, translation, pos FROM wordlist WHERE dictionaryid = '$dictionaryId'";
-            $data = $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
-            $mysqli->close();
-            $data['dictionaryid'] = $dictionaryId;
-            return $data;
-        } else return 'Access denied.';
-    }
-
     public function getFieldsContent($dictionaryId)
     {
-        $mysqli = Service::connectToDB();
+        $mysqli = DB::connectToDB();
         $query = "SELECT * FROM dictionaries WHERE dictionaryid = '$dictionaryId'";
         return $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
     }
 
     public static function addDictionaryToUser($dictionaryid, $username)
     {
-        $mysqli = Service::connectToDB();
+        $mysqli = DB::connectToDB();
         $userid = Users::getUserId($username);
         $query = "INSERT INTO users_has_dictionaries(users_userid, dictionaries_dictionaryid) VALUES('$userid', '$dictionaryid')";
         return mysqli_query($mysqli, $query);
     }
 
 
-    public function getAllDictionaries()
+    public function getUserDictionaries()
     {
         $userid = Users::getUserId($_SESSION['username']);
-        $mysqli = Service::connectToDB();
-        $result = $mysqli->query("SELECT * FROM dictionaries WHERE ispublic = 1 AND dictionaryid !=
-                                (SELECT
-                                  users_has_dictionaries.dictionaries_dictionaryid
-                                FROM users_has_dictionaries
-                                    WHERE users_has_dictionaries.users_userid = '$userid' )");
+        $mysqli = DB::connectToDB();
+        $result = $mysqli->query("SELECT * FROM dictionaries WHERE ispublic = 1 AND dictionaryid NOT IN
+                                (SELECT dictionaries_dictionaryid FROM users_has_dictionaries WHERE users_userid = '$userid')");
         if ($result) {
             return $result->fetch_all(MYSQLI_ASSOC);
         } else return false;
@@ -108,7 +85,7 @@ class Dictionary
 
     public static function isDictionaryNameUsed($dictionaryName): bool
     {
-        $mysqli = Service::connectToDB();
+        $mysqli = DB::connectToDB();
         $query = "SELECT name FROM dictionaries WHERE name = '$dictionaryName'";
         $result = $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
         $mysqli->close();
@@ -117,9 +94,9 @@ class Dictionary
         } else return true;
     }
 
-    public static function isWordlistNameUsedExceptThis($dictionaryName, $id): bool
+    public static function isDictionaryNameUsedExceptThis($dictionaryName, $id): bool
     {
-        $mysqli = Service::connectToDB();
+        $mysqli = DB::connectToDB();
         $query = "SELECT name FROM dictionaries WHERE name = '$dictionaryName' AND dictionaryid != '$id'";
         $result = $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
         $mysqli->close();
@@ -128,9 +105,11 @@ class Dictionary
         } else return true;
     }
 
-    public static function isUserHasADictionary($userid, $dictionaryid): bool
+    public static function isUserHasADictionary(): bool
     {
-        $mysqli = Service::connectToDB();
+        $userid = Users::getUserId($_SESSION['username']);
+        $dictionaryid = $_SESSION['dictionaryId'];
+        $mysqli = DB::connectToDB();
         $query = "SELECT *
                     FROM users_has_dictionaries
                     WHERE users_userid = '$userid' AND dictionaries_dictionaryid = '$dictionaryid'";
@@ -145,7 +124,7 @@ class Dictionary
     {
         $username = $_SESSION['username'];
         $userid = Users::getUserId($username);
-        $mysqli = Service::connectToDB();
+        $mysqli = DB::connectToDB();
         $result = $mysqli->query("SELECT * FROM dictionaries WHERE dictionaryowner = '$userid' AND dictionaryid = '$dictionaryid'")->fetch_all(MYSQLI_ASSOC);
         $mysqli->close();
         if (empty($result)) {
@@ -153,8 +132,8 @@ class Dictionary
         } else return true;
     }
 
-    public function setTitle($id)
+    public static function setTitle(): string
     {
-        return self::getDictionaryName($id);
+        return self::getDictionaryName($_SESSION['dictionaryId']);
     }
 }

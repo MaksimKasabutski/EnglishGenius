@@ -8,6 +8,7 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="/css/signin.css">
+    <link rel="stylesheet" href="/css/pagination.css">
     <link rel="stylesheet" href="/css/font-awesome.css">
     <link rel="stylesheet" href="/css/fonts.css">
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">

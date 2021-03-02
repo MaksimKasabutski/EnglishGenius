@@ -1,14 +1,14 @@
 <?php
 namespace Models;
 use Core\Model;
-use Components\Service;
+use Components\DB;
 
 class Profile extends Model
 {
 
     public static function getUsersLists($username): array
     {
-        $mysqli = Service::connectToDB();
+        $mysqli = DB::connectToDB();
         $query = "SELECT
                       dictionaries.dictionaryid,
                       dictionaries.name,

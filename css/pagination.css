@@ -1,0 +1,27 @@
+#pagination {
+    margin: 0 auto;
+    margin-top: 10px;
+    color: #2c2c2c;
+    display: table;
+}
+.pagination-buttons {
+    display: inline-block;
+    height: 26px;
+    text-align: center;
+    font-size: 17px;
+    color: #939393;
+}
+.pg-in {
+    padding: 3px 5px 7px;
+    vertical-align: top;
+    display: inline-block;
+}
+.pg-in:hover {
+    color: #444;
+}
+.pg-in.active {
+    color: #000;
+    font-weight: 700;
+    border-bottom: 2px solid #577ca1;    
+}
+

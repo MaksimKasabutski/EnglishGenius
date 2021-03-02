@@ -1,6 +1,9 @@
 <?php
+
 use Models\Dictionary;
+
 ?>
+
 <br>
 <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
      aria-label="breadcrumb">
@@ -9,44 +12,18 @@ use Models\Dictionary;
         <li class="breadcrumb-item active" aria-current="page"><?php echo $title ?></li>
     </ol>
 </nav>
+
 <?php
 //date from Dictionary->getWords => DictionaryController->actionData
-$dictionaryId = array_pop($data);
-if(\Models\Dictionary::isDictionaryOwner($dictionaryId)) {
+$dictionaryId = $_SESSION['dictionaryId'];
+if (Dictionary::isDictionaryOwner($dictionaryId)) {
     echo '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addword"
-        data-bs-placement="bottom">ADD WORD
-</button>';
+          data-bs-placement="bottom">ADD WORD</button>';
 }
+echo "<div class='col-8'>";
+echo $data;
+echo "</div>";
 ?>
-<div class='col-8'>
-    <table class='table table-inverse'>
-        <tr>
-            <th class="col-5">English word</th>
-            <th class="col-5">Translation</th>
-            <th class="col-2">Actions</th>
-        </tr>
-
-        <?php
-
-        if (!empty($data)) {
-            foreach ($data as $wordpare) {
-                $result = "<tr id='" . $wordpare['wordid'] . "'><td>" . $wordpare['word'] . " <div class='pos'>" . $wordpare['pos'] . "</div></td><td>" . $wordpare['translation'] . "</td>";
-                if (Dictionary::isDictionaryOwner($dictionaryId)) {
-                    $updateLink = URL . 'word/update/' . $wordpare['wordid'];
-                    $wordpareData = $wordpare['wordid'] . ", '" . $wordpare['word'] . "', '" . $wordpare['pos'] . "', '" . $wordpare['translation'] . "'";
-                    $result .= "<td>\n<button class='btn btn-primary btn-sm' onclick='deleteWord(" . $dictionaryId . ", " . $wordpare['wordid'] . ")'>Del</button>\n";
-                    $result .= '<a class="btn btn-primary btn-sm ml5" href="'. $updateLink .'">
-                                    Edit
-                                </a></td>';
-                }
-                $result .= "</tr>";
-                echo $result;
-            }
-        } else echo "<tr id='warning'><td> There is nothing here yet.</td></tr>";
-        ?>
-
-    </table>
-</div>
 
 <div class="modal fade" id="addword" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
@@ -85,6 +62,5 @@ if(\Models\Dictionary::isDictionaryOwner($dictionaryId)) {
         </div>
     </div>
 </div>
-
 <script src="/js/word.js"></script>
 <script src="/js/addWordIntoDictionary.js"></script>

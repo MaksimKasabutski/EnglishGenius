@@ -1,6 +1,6 @@
 <?php
 namespace Controllers;
-use Components\{Service, Response, Validation};
+use Components\{DB, Response, Validation};
 use Models\Dictionary;
 
 class DictionaryAPIController
@@ -17,8 +17,8 @@ class DictionaryAPIController
     {
         $this->request = json_decode(file_get_contents('php://input'), true);
         $this->dictionaryId = isset($this->request['dictionaryId']) ? $this->request['dictionaryId'] : NULL;
-        $this->dictionaryName = Service::strCleaner(isset($this->request['dictionaryName']) ? $this->request['dictionaryName'] : NULL);
-        $this->dictionaryDiscription = Service::strCleaner(isset($this->request['dictionaryDiscription']) ? $this->request['dictionaryDiscription'] : NULL);
+        $this->dictionaryName = Validation::strCleaner(isset($this->request['dictionaryName']) ? $this->request['dictionaryName'] : NULL);
+        $this->dictionaryDiscription = Validation::strCleaner(isset($this->request['dictionaryDiscription']) ? $this->request['dictionaryDiscription'] : NULL);
         $this->isPublic = isset($this->request['isPublic']) ? ($this->request['isPublic'] ? 1 : 0) : NULL;
         $this->username = $_SESSION['username'];
         $this->userid = $_SESSION['userid'];
@@ -45,7 +45,7 @@ class DictionaryAPIController
 
     public function actionUpdate()
     {
-        if (Dictionary::isWordlistNameUsedExceptThis($this->dictionaryName, $this->dictionaryId)) {
+        if (Dictionary::isDictionaryNameUsedExceptThis($this->dictionaryName, $this->dictionaryId)) {
             $response = new Response('error', 'This name is already taken.');
             echo json_encode($response);
             return;

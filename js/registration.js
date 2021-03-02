@@ -21,6 +21,7 @@ registrationForm.onsubmit = function(event) {
             var json = JSON.parse(xhr.responseText);
             if (json.result === 'success') {
                 registrationForm.style.display = 'none';
+                servResponse.classList.remove('alert-danger');
                 servResponse.classList.add('alert-success');
                 servResponse.style.display = 'block';
                 servResponse.textContent = json.message;

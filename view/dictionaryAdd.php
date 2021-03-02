@@ -35,7 +35,6 @@ if(!$data) {
             <td class="col-7"><?php echo $discription ?></дщкуь></td>
             <td class="col-2">
                 <button class="btn btn-primary" id="addButton" onclick="addDictionaryToUser(<?php echo $dictionaryId . ', \'' . $_SESSION['username'].'\''?>)">Add</button>
-                <button class="btn btn-primary">Preview</button>
             </td>
         </tr>
         <?php

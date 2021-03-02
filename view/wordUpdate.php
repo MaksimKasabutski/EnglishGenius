@@ -2,7 +2,7 @@
 <?php
 if ($data != NULL) {
     $dictionaryname = $data['dictionaryname'];
-    $dictionaryid = $data['dictionaryid'];
+    $dictionaryid = $_SESSION['dictionaryId'];
     $wordid = $data[0]['wordid'];
     $engWord = $data[0]['word'];
     $rusWord = $data[0]['translation'];
