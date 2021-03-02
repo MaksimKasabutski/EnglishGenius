@@ -11,7 +11,9 @@ class DictionaryController extends Controller
     public function __construct($parameters)
     {
         parent::__construct();
-        $_SESSION['dictionaryId'] = intval($parameters[0]);
+        if(!empty($parameters)) {
+            $_SESSION['dictionaryId'] = intval($parameters[0]);
+        }
     }
 
     public function actionData()

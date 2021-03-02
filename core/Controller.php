@@ -1,5 +1,6 @@
 <?php
 namespace Core;
+
 use Core\View;
 use Models\Users;
 
@@ -14,5 +15,8 @@ class Controller
             header('Location: login');
         }
         $this->view = new View();
+    }
+    public function action404() {
+        $this->view->generate(NULL, '404.php');
     }
 }

@@ -23,7 +23,9 @@ class Router
     public function run()
     {
         $uri = $this->getURI();
-
+        if(empty($uri)) {
+            $uri = 'login';
+        }
         foreach ($this->routes as $uriPattern => $path) {
             if (preg_match("~$uriPattern~", $uri)) {
 
@@ -43,6 +45,10 @@ class Router
                     break;
                 }
             }
+        }
+        if (!isset($controllerObject)) {
+            $controllerObject = new Controller();
+            $controllerObject->action404();
         }
     }
 }
