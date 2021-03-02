@@ -28,6 +28,7 @@ loginForm.onsubmit = function(event) {
                 servResponse.classList.add('alert-danger');
                 servResponse.style.display = 'block';
                 servResponse.textContent = json.message;
+                setTimeout('servResponse.style.display = \'none\';',2000);
             }
         }
     }

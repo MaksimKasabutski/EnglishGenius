@@ -30,8 +30,8 @@ class Words
             $html .= "<tr id='" . $wordpare['wordid'] . "'><td>" . $wordpare['word'] . " <div class='pos'>" . $wordpare['pos'] . "</div></td><td>" . $wordpare['translation'] . "</td>";
             if (Dictionary::isDictionaryOwner($dictionaryId)) {
                 $updateLink = URL . 'word/update/' . $wordpare['wordid'];
-                $html .= "<td>\n<button class='btn btn-primary btn-sm' onclick='deleteWord(" . $dictionaryId . ", " . $wordpare['wordid'] . ")'>Del</button>\n";
-                $html .= '<a class="btn btn-primary btn-sm ml5" href="' . $updateLink . '">
+                $html .= "<td>\n<button class='btn btn-outline-primary btn-sm' onclick='deleteWord(" . $dictionaryId . ", " . $wordpare['wordid'] . ")'>Del</button>\n";
+                $html .= '<a class="btn btn-outline-primary btn-sm ml5" href="' . $updateLink . '">
                               Edit
                           </a></td>';
             }
@@ -39,6 +39,21 @@ class Words
         }
         $html .= '</table>';
         return $html;
+    }
+
+    public static function renderRowsCounter()
+    {
+       echo '<div class="rows">
+        <form id="rows">
+            <label for="session-max-rows">Count of rows:</label>
+            <select id="session-max-rows" class="form-select form-select-sm">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+            </select>
+        </form>
+    </div>';
     }
 
     public static function addWordIntoDictionary($englishWord, $translation, $dictionaryid, $pos)

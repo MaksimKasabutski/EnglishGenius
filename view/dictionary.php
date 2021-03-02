@@ -20,10 +20,13 @@ if (Dictionary::isDictionaryOwner($dictionaryId)) {
     echo '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addword"
           data-bs-placement="bottom">ADD WORD</button>';
 }
-echo "<div class='col-8'>";
-echo $data;
-echo "</div>";
 ?>
+<div class='col-8'>
+    <br>
+
+<?php
+echo $data;?>
+</div>
 
 <div class="modal fade" id="addword" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">

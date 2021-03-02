@@ -1,9 +1,8 @@
 <?php
 namespace Models;
-use Core\Model;
 use Components\DB;
 
-class Profile extends Model
+class Profile
 {
 
     public static function getUsersLists($username): array

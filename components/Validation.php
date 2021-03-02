@@ -19,7 +19,7 @@ class Validation
 
     public static function isRus($string)
     {
-        return preg_match("/[^(А-Яа-яЁё)]/u", $string);
+        return preg_match("/[^(А-Яа-яЁё\s)]/u", $string);
     }
 
     public static function isEng($string)
