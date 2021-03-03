@@ -1,6 +1,8 @@
 <?php
 namespace Core;
 
+use Components\Response;
+
 class APIController
 {
     protected $request;

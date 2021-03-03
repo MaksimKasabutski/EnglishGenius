@@ -136,4 +136,5 @@ class Dictionary
     {
         return self::getDictionaryName($_SESSION['dictionaryId']);
     }
+
 }

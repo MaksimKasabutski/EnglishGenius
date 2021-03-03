@@ -24,7 +24,7 @@ class Validation
 
     public static function isEng($string)
     {
-        return preg_match("/[^(A-Za-z\'\s)]/u", $string);
+        return preg_match("/[^(A-Za-z\s)]/u", $string);
     }
 
     public static function checkLength($minlength, $maxlength, $string): bool

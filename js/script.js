@@ -52,7 +52,8 @@ function generateModalForRemove(id, name, url) {
 }
 
 function addDictionaryToUser(dictionaryid, username) {
-    let addButton = document.getElementById('addButton');
+    let addButton = document.getElementById('addButton'+dictionaryid);
+
     let xhr = new XMLHttpRequest();
     let body = JSON.stringify({"dictionaryId": dictionaryid, "username": username});
 
@@ -69,6 +70,27 @@ function addDictionaryToUser(dictionaryid, username) {
             } else if (json.result === 'error') {
                 alert('Not added')
             }
+        }
+    }
+}
+
+function setSessionMaxRows() {
+    var selectBox = document.getElementById("session-max-rows");
+    var rowsnumber = selectBox.options[selectBox.selectedIndex].value;
+
+    let xhr = new XMLHttpRequest();
+    let body = JSON.stringify({"rowsnumber": rowsnumber});
+
+    xhr.open("POST", '/api/dictionary/setrows', true);
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.send(body);
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            let json  = JSON.parse(xhr.responseText);
+            if(json.result === 'success') {
+                location.reload();
+            } else alert(json.message);
         }
     }
 }

@@ -2,8 +2,9 @@
 
 namespace Controllers;
 
+use Components\DB;
 use Core\Controller;
-use Models\{Users, Profile};
+use Models\Profile;
 
 class ProfileController extends Controller
 {
@@ -11,4 +12,6 @@ class ProfileController extends Controller
     {
         $this->view->generate('profile.php', 'template.php', Profile::getUsersLists($_SESSION['username']), $_SESSION['username']);
     }
+
+
 }

@@ -1,9 +1,11 @@
 <?php
 return array(
+    'learn/(er|re)/([0-9]+)' => 'learning/index/$1/$2',
     'api/word/update' => 'wordAPI/update',
     'api/word/add' => 'wordAPI/add',
     'api/word/delete' => 'wordAPI/delete',
     'word/update/([0-9]+)' => 'word/update/$1',
+    'api/dictionary/setrows' => 'dictionaryAPI/setRowsNumber',
     'api/dictionary/add' => 'dictionaryAPI/addDictionaryToUser',
     'api/dictionary/create' => 'dictionaryAPI/create',
     'api/dictionary/update' => 'dictionaryAPI/update',

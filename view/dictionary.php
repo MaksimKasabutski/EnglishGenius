@@ -21,49 +21,65 @@ if (Dictionary::isDictionaryOwner($dictionaryId)) {
           data-bs-placement="bottom">ADD WORD</button>';
 }
 ?>
-<div class='col-8'>
-    <br>
-
-<?php
-echo $data;?>
-</div>
-
-<div class="modal fade" id="addword" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add word</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="row">
+    <div class='col-8'>
+        <?php
+        echo $data; ?>
+    </div>
+    <div class="col-4">
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#learnButtonBox">
+                    Learn
+                </button>
+                <div id="learnButtonBox" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <a href="/learn/er/<?php echo $dictionaryId?>">Eng <i class="fa fa-long-arrow-right fa-1" aria-hidden="true"></i> Rus</a><br>
+                        <a href="/learn/re/<?php echo $dictionaryId?>">Rus <i class="fa fa-long-arrow-right fa-1" aria-hidden="true"></i> Eng</a>
+                    </div>
+                </div>
             </div>
-            <form id="addWordIntoDictionary" method="POST">
-                <div class="modal-body">
-                    <label for="englishWord" class="form-label">English</label>
-                    <input type="text" class="form-control" id="englishWord" autocomplete="off">
-                    <div class="form-text">Must be 1-25 english letters long.</div>
-                    <br>
-                    <label for="translation" class="form-label">Translate</label>
-                    <input type="text" class="form-control" id="translation" autocomplete="off">
-                    <div class="form-text">Must be 1-25 russian letters long.</div>
-                    <br>
-                    <label for="pos">Part of speech</label>
-                    <select id="pos" class="form-select">
-                        <option selected>-</option>
-                        <option value="noun">noun</option>
-                        <option value="verb">verb</option>
-                        <option value="adverb">adverb</option>
-                        <option value="adjective">adjective</option>
-                        <option value="preposition">preposition</option>
-                    </select>
-                    <input type="hidden" id="dictionaryid" value="<?php echo $dictionaryId ?>">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <input type="submit" class="btn btn-primary" value="Add">
-                </div>
-            </form>
-            <div id="response" class="alert" style="display: none; width: 90%; margin: 0 auto 15px auto;"></div>
         </div>
     </div>
-</div>
-<script src="/js/word.js"></script>
-<script src="/js/addWordIntoDictionary.js"></script>
+
+    <div class="modal fade" id="addword" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add word</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="addWordIntoDictionary" method="POST">
+                    <div class="modal-body">
+                        <label for="englishWord" class="form-label">English</label>
+                        <input type="text" class="form-control" id="englishWord" autocomplete="off">
+                        <div class="form-text">Must be 1-25 english letters long.</div>
+                        <br>
+                        <label for="translation" class="form-label">Translate</label>
+                        <input type="text" class="form-control" id="translation" autocomplete="off">
+                        <div class="form-text">Must be 1-25 russian letters long.</div>
+                        <br>
+                        <label for="pos">Part of speech</label>
+                        <select id="pos" class="form-select">
+                            <option selected>-</option>
+                            <option value="noun">noun</option>
+                            <option value="verb">verb</option>
+                            <option value="adverb">adverb</option>
+                            <option value="adjective">adjective</option>
+                            <option value="preposition">preposition</option>
+                        </select>
+                        <input type="hidden" id="dictionaryid" value="<?php echo $dictionaryId ?>">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary" value="Add">
+                    </div>
+                </form>
+                <div id="response" class="alert" style="display: none; width: 90%; margin: 0 auto 15px auto;"></div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/script.js"></script>
+    <script src="/js/word.js"></script>
+    <script src="/js/addWordIntoDictionary.js"></script>

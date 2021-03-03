@@ -10,9 +10,10 @@ class Words
     public static function renderData(): string
     {
         $dictionaryId = $_SESSION['dictionaryId'];
-        $pagi = new Pagination(5);
+        $pagi = new Pagination(isset($_SESSION['rowsnumber']) ? $_SESSION['rowsnumber'] : 5);
         $pagi->createPagination();
         $html = $pagi->createPagination();
+        $html .= self::renderRowsSelector();
         $html .= "<table class='table table-inverse'><tr>
             <th class='col-5'>English word</th>
             <th class='col-5'>Translation</th>";
@@ -21,7 +22,7 @@ class Words
         }
         $html .= '</tr>';
         $firstWord = $pagi->getFirstWord();
-        $data = self::getWords($firstWord, $pagi->wordsPerPage);
+        $data = self::getPartsOfWords($firstWord, $pagi->wordsPerPage);
         if (empty($data)) {
             $html .= "<tr id='warning'><td> There is nothing here yet.</td></tr>";
             return $html;
@@ -41,19 +42,23 @@ class Words
         return $html;
     }
 
-    public static function renderRowsCounter()
+    public static function renderRowsSelector()
     {
-       echo '<div class="rows">
-        <form id="rows">
-            <label for="session-max-rows">Count of rows:</label>
-            <select id="session-max-rows" class="form-select form-select-sm">
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-            </select>
-        </form>
-    </div>';
+        $values = array(5, 10, 20, 50);
+        $selectedValue = self::getRowsNumber();
+        $html = '<div class="rows">
+                <form id="rows">
+                    <label for="session-max-rows">Count of rows:</label>
+                    <select id="session-max-rows" class="form-select form-select-sm" onchange="setSessionMaxRows()">';
+        foreach ($values as $value) {
+            if ($value == $selectedValue) {
+                $html .= "<option selected value='$value'>$value</option>";
+            } else {
+                $html .= "<option value='$value'>$value</option>";
+            }
+        }
+        $html .= '</select></form></div>';
+        return $html;
     }
 
     public static function addWordIntoDictionary($englishWord, $translation, $dictionaryid, $pos)
@@ -87,16 +92,28 @@ class Words
         return mysqli_query($mysqli, $query);
     }
 
-    public static function getWords($firstWord, $wordsPerPage)
+    private static function getWords($query)
     {
-        $dictionaryId = $_SESSION['dictionaryId'];
         if (Dictionary::isUserHasADictionary()) {
             $mysqli = DB::connectToDB();
-            $query = "SELECT wordid, word, translation, pos FROM wordlist WHERE dictionaryid = '$dictionaryId' ORDER BY word LIMIT $firstWord, $wordsPerPage";
             $data = $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
             $mysqli->close();
             return $data;
         } else return 'Access denied.';
+    }
+
+    public static function getPartsOfWords($firstWord, $wordsPerPage)
+    {
+        $dictionaryId = $_SESSION['dictionaryId'];
+        $query = "SELECT wordid, word, translation, pos FROM wordlist WHERE dictionaryid = '$dictionaryId' ORDER BY word LIMIT $firstWord, $wordsPerPage";
+        return self::getWords($query);
+    }
+
+    public static function getAllWords()
+    {
+        $dictionaryId = $_SESSION['dictionaryId'];
+        $query = "SELECT word, translation, pos FROM wordlist WHERE dictionaryid = '$dictionaryId'";
+        return self::getWords($query);
     }
 
     public static function getWordContent($wordid)
@@ -114,5 +131,12 @@ class Words
         return $result[0]['name'];
     }
 
+    public static function getRowsNumber()
+    {
+        $mysqli = DB::connectToDB();
+        $userid = $_SESSION['userid'];
+        $query = "SELECT rowsnumber FROM users WHERE userid = '$userid'";
+        return $mysqli->query($query)->fetch_all(MYSQLI_ASSOC)[0]['rowsnumber'];
+    }
 
 }

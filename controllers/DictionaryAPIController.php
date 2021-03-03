@@ -1,11 +1,11 @@
 <?php
 namespace Controllers;
+use Core\APIController;
 use Components\{DB, Response, Validation};
 use Models\Dictionary;
 
-class DictionaryAPIController
+class DictionaryAPIController extends APIController
 {
-    protected $request;
     protected $dictionaryId;
     protected $dictionaryName;
     protected $dictionaryDiscription;
@@ -15,7 +15,7 @@ class DictionaryAPIController
 
     public function __construct()
     {
-        $this->request = json_decode(file_get_contents('php://input'), true);
+        parent::__construct();
         $this->dictionaryId = isset($this->request['dictionaryId']) ? $this->request['dictionaryId'] : NULL;
         $this->dictionaryName = Validation::strCleaner(isset($this->request['dictionaryName']) ? $this->request['dictionaryName'] : NULL);
         $this->dictionaryDiscription = Validation::strCleaner(isset($this->request['dictionaryDiscription']) ? $this->request['dictionaryDiscription'] : NULL);
@@ -68,6 +68,21 @@ class DictionaryAPIController
             $response = new Response('success', '');
         } else {
             $response = new Response('error', '');
+        }
+        echo json_encode($response);
+    }
+
+    public function actionSetRowsNumber()
+    {
+        $rowsNumber = $this->request['rowsnumber'];
+        $mysqli = DB::connectToDB();
+        $_SESSION['rowsnumber'] = $rowsNumber;
+        $userid = $_SESSION['userid'];
+        $query = "UPDATE users SET rowsnumber = '$rowsNumber' WHERE userid = '$userid'";
+        if(mysqli_query($mysqli, $query)) {
+            $response = new Response('success', NULL);
+        } else {
+            $response = new Response('error', 'Update failed');
         }
         echo json_encode($response);
     }
