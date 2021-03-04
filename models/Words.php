@@ -15,30 +15,29 @@ class Words
         $html = $pagi->createPagination();
         $html .= self::renderRowsSelector();
         $html .= "<table class='table table-inverse'><tr>
-            <th class='col-5'>English word</th>
-            <th class='col-5'>Translation</th>";
+                        <th class='col-5'>English word</th>
+                        <th class='col-5'>Translation</th>";
         if (Dictionary::isDictionaryOwner($dictionaryId)) {
             $html .= '<th class="col-2">Actions</th>';
         }
         $html .= '</tr>';
-        $firstWord = $pagi->getFirstWord();
-        $data = self::getPartsOfWords($firstWord, $pagi->wordsPerPage);
+        $data = self::getPartsOfWords($pagi->getFirstWord(), $pagi->wordsPerPage);
         if (empty($data)) {
-            $html .= "<tr id='warning'><td> There is nothing here yet.</td></tr>";
-            return $html;
-        }
-        foreach ($data as $wordpare) {
-            $html .= "<tr id='" . $wordpare['wordid'] . "'><td>" . $wordpare['word'] . " <div class='pos'>" . $wordpare['pos'] . "</div></td><td>" . $wordpare['translation'] . "</td>";
-            if (Dictionary::isDictionaryOwner($dictionaryId)) {
-                $updateLink = URL . 'word/update/' . $wordpare['wordid'];
-                $html .= "<td>\n<button class='btn btn-outline-primary btn-sm' onclick='deleteWord(" . $dictionaryId . ", " . $wordpare['wordid'] . ")'>Del</button>\n";
-                $html .= '<a class="btn btn-outline-primary btn-sm ml5" href="' . $updateLink . '">
+            $html .= "</table><div id='warning'>There is nothing here yet.</div>";
+        } else {
+            foreach ($data as $wordpare) {
+                $html .= "<tr id='" . $wordpare['wordid'] . "'><td>" . $wordpare['word'] . " <div class='pos'>" . $wordpare['pos'] . "</div></td><td>" . $wordpare['translation'] . "</td>";
+                if (Dictionary::isDictionaryOwner($dictionaryId)) {
+                    $updateLink = URL . 'word/update/' . $wordpare['wordid'];
+                    $html .= "<td>\n<button class='btn btn-outline-primary btn-sm' onclick='deleteWord(" . $dictionaryId . ", " . $wordpare['wordid'] . ")'>Del</button>\n";
+                    $html .= '<a class="btn btn-outline-primary btn-sm ml5" href="' . $updateLink . '">
                               Edit
                           </a></td>';
+                }
+                $html .= "</tr>";
             }
-            $html .= "</tr>";
+            $html .= "</table>";
         }
-        $html .= '</table>';
         return $html;
     }
 

@@ -147,9 +147,17 @@ select#pos {
     display: inline-block;
     position: absolute;
     margin-top: 10px;
+    font-size: 15px;
 }
 #current, #total, .counter>span {
     display: inline-block;
-    font-size: 18px;
+}
+#show-button {
+    margin-top: 124.4px;
+    margin-left: -10px;
+}
+
+.add-word-button {
+    margin-bottom: 15px;
 }
 

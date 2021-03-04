@@ -2,7 +2,7 @@ let form = document.getElementById('learning-form')
 let checkButton = document.getElementById('check-button')
 let prevButton = document.getElementById('prev-button')
 let nextButton = document.getElementById('next-button')
-
+let showButton = document.getElementById('show-button')
 let word = document.getElementById('word').innerText
 let counter = document.getElementById('counter').value
 let pos = document.getElementById('pos').innerText
@@ -41,18 +41,9 @@ checkButton.onclick = function (event) {
 
 prevButton.onclick = function (event) {
     event.preventDefault();
-
     counter--
-
-    let xhr = new XMLHttpRequest();
-    let body = JSON.stringify({
-        "counter": counter
-    });
-
-    // URL -> LearningAPI -> actionNext
-    xhr.open("POST", '/api/learning/prev', true);
-    xhr.setRequestHeader('Content-Type', 'application/json')
-    xhr.send(body);
+    let body = JSON.stringify({"counter": counter});
+    xhr = sendXML(body)
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
@@ -91,18 +82,9 @@ prevButton.onclick = function (event) {
 
 nextButton.onclick = function (event) {
     event.preventDefault()
-
     counter++
-
-    let xhr = new XMLHttpRequest();
-    let body = JSON.stringify({
-        "counter": counter
-    });
-
-    // URL -> LearningAPI -> actionNext
-    xhr.open("POST", '/api/learning/next', true);
-    xhr.setRequestHeader('Content-Type', 'application/json')
-    xhr.send(body);
+    let body = JSON.stringify({"counter": counter});
+    xhr = sendXML(body)
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
@@ -136,4 +118,26 @@ nextButton.onclick = function (event) {
 
         }
     }
+}
+
+showButton.onclick = function(event) {
+    event.preventDefault()
+    let body = JSON.stringify({"counter": counter});
+    xhr = sendXML(body)
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            let json = JSON.parse(xhr.responseText)
+            translationInput.value = json.translation
+        }
+    }
+}
+
+function sendXML(body) {
+    let xhr = new XMLHttpRequest();
+
+    xhr.open("POST", '/api/learning/next', true);
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.send(body);
+
+    return xhr
 }

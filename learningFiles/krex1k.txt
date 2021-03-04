@@ -1,6 +1,13 @@
-мама/mom/noun
-машина/car/noun
-стол/table/noun
-красивый/nice/adjective
-летать/fly/verb
-говорить/say/verb
+abandon/покидать/verb
+idle/холостой ход/noun
+accuse/обвинять/verb
+acknowledge/признавать/verb
+admire/восхищаться/verb
+age/стареть/verb
+afford/предоставлять/verb
+advance/продвигать/verb
+admit/признавать/verb
+advise/советовать/verb
+accommodation/жилье/noun
+acquire/приобретать/verb
+afterwards/впоследствии/adverb

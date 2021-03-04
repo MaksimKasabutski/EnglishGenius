@@ -14,6 +14,7 @@ $dictionaryName = \Models\Dictionary::getDictionaryName($dictionaryid);
     </ol>
 </nav>
 <div class="row">
+    <div class="col-4"></div>
     <div class="col-3 learning-form">
         <form id="learning-form">
             <div class="header">
@@ -43,5 +44,9 @@ $dictionaryName = \Models\Dictionary::getDictionaryName($dictionaryid);
             </div>
         </form>
     </div>
+    <div class="col-2">
+        <button class="btn btn-warning" id="show-button">Show</button>
+    </div>
+    <div class="col-3"></div>
 </div>
 <script src="/js/learning.js"></script>
