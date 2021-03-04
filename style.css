@@ -87,17 +87,20 @@
     margin-left: auto;
     display: inline-block;
 }
+
 .pos {
     display: inline-block;
     color: #737373;
     font-size: 13px;
     margin-left: 5px;
 }
+
 select#pos {
     display: inline-block;
     margin-left: 5px;
     width: 120px;
 }
+
 .ml5 {
     margin-left: 5px;
 }
@@ -108,3 +111,45 @@ select#pos {
     padding: 3px 24px 3px 8px;
     margin-left: 5px;
 }
+
+.learning-form {
+    margin: 0 auto;
+    padding: 40px 0px;
+}
+
+.learning-form #word {
+    text-align: center;
+    font-size: 26px;
+}
+
+.learning-form #pos {
+    text-align: center;
+    font-size: 16px;
+    padding: 2px 0 20px 0;
+}
+
+.learning-form .learning-form-button {
+    padding: 0 38px;
+}
+
+.wrong-style {
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(225,83,97,0.5);
+}
+
+.right-style {
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(0,153,110,0.5)
+}
+.counter {
+    display: inline-block;
+    position: absolute;
+    margin-top: 10px;
+}
+#current, #total, .counter>span {
+    display: inline-block;
+    font-size: 18px;
+}
+

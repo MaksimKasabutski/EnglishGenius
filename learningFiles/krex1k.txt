@@ -1,0 +1,6 @@
+мама/mom/noun
+машина/car/noun
+стол/table/noun
+красивый/nice/adjective
+летать/fly/verb
+говорить/say/verb

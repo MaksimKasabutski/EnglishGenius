@@ -1,5 +1,7 @@
 <?php
 return array(
+    'api/learning/(next|prev)' => 'learningAPI/next',
+    'api/learning/check' => 'learningAPI/check',
     'learn/(er|re)/([0-9]+)' => 'learning/index/$1/$2',
     'api/word/update' => 'wordAPI/update',
     'api/word/add' => 'wordAPI/add',
